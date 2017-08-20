@@ -1,1 +1,4 @@
-<?php header( 'Location: /index.html' ) ;  ?>
+<?php
+    header('Location: /index.html');
+    header("Cache-Control: no-cache, must-revalidate");
+?>
