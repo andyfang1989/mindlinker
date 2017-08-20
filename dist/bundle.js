@@ -1973,8 +1973,8 @@ module.exports = {
 
 /***/ }),
 /* 63 */
-/* exports provided: setScaleAndAnchorForObject */
-/* exports used: setScaleAndAnchorForObject */
+/* exports provided: setScaleAndAnchorForObject, hideBlock, showBlock */
+/* exports used: setScaleAndAnchorForObject, hideBlock, showBlock */
 /*!***********************!*\
   !*** ./src/UIUtil.js ***!
   \***********************/
@@ -1982,9 +1982,19 @@ module.exports = {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setScaleAndAnchorForObject;
+/* harmony export (immutable) */ __webpack_exports__["b"] = hideBlock;
+/* harmony export (immutable) */ __webpack_exports__["c"] = showBlock;
 function setScaleAndAnchorForObject(obj, sX, sY, aX, aY) {
     obj.scale.setTo(sX, sY);
     obj.anchor.setTo(aX, aY);
+}
+
+function hideBlock() {
+    document.getElementById('block').style.visibility = "hidden";
+}
+
+function showBlock() {
+    document.getElementById('block').style.visibility = "visible";
 }
 
 /***/ }),
@@ -5001,6 +5011,11 @@ function play(animationContext) {
         /**let prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
         setScaleAndAnchorForObject(prevButton, 0.5, 0.5, 0.5, 0.5)
         TooltipBuilder(this.game, prevButton, '上一页', 'bottom')**/
+
+        /**
+         hide block in main menu
+         **/
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* hideBlock */])();
     }
 
     create() {
@@ -5094,9 +5109,11 @@ function play(animationContext) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sprites_InteractiveItem__ = __webpack_require__(/*! ../../sprites/InteractiveItem */ 126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__animation_KnightAnimationPlayer__ = __webpack_require__(/*! ../../animation/KnightAnimationPlayer */ 124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__ = __webpack_require__(/*! ../../util/TooltipBuilder */ 33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__UIUtil__ = __webpack_require__(/*! ../../UIUtil */ 63);
 /**
  * Created by kfang on 6/15/17.
  */
+
 
 
 
@@ -5408,12 +5425,6 @@ function play(animationContext) {
         this.setCurrentGameContexts();
         this.setCurrentTaskContext();
         this.preloadImages();
-        if (typeof this.game.workspace === "undefined") {
-            // Only create blocks once
-            this.addWorkspace();
-        }
-        this.game.workspace.clear();
-        this.loadToolbox();
     }
 
     create() {
@@ -5428,6 +5439,13 @@ function play(animationContext) {
         this.drawForeGround();
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets);
         this.addAudios();
+        if (typeof this.game.workspace === "undefined") {
+            // Only create blocks once
+            this.addWorkspace();
+        }
+        this.game.workspace.clear();
+        this.loadToolbox();
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["c" /* showBlock */])();
     }
 
     onBackHome() {
@@ -5669,9 +5687,11 @@ function play(animationContext) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sprites_Princess__ = __webpack_require__(/*! ../../sprites/Princess */ 128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__animation_PrincessAnimationPlayer__ = __webpack_require__(/*! ../../animation/PrincessAnimationPlayer */ 125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__ = __webpack_require__(/*! ../../util/TooltipBuilder */ 33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__UIUtil__ = __webpack_require__(/*! ../../UIUtil */ 63);
 /**
  * Created by kfang on 7/23/17.
  */
+
 
 
 
@@ -5829,12 +5849,6 @@ function play(animationContext) {
         this.setCurrentGameContexts();
         this.setCurrentTaskContext();
         this.loadPath();
-        if (typeof this.game.workspace === "undefined") {
-            // Only create blocks once
-            this.addWorkspace();
-        }
-        this.game.workspace.clear();
-        this.loadToolbox();
     }
 
     create() {
@@ -5846,6 +5860,13 @@ function play(animationContext) {
         this.drawMainCharacterAtStartingPosition();
         this.addAnimationsForSprite(this.princess, this.gameContext.spritesheets);
         this.addAudios();
+        if (typeof this.game.workspace === "undefined") {
+            // Only create blocks once
+            this.addWorkspace();
+        }
+        this.game.workspace.clear();
+        this.loadToolbox();
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["c" /* showBlock */])();
     }
 
     onBackHome() {
@@ -12167,7 +12188,7 @@ module.exports = __webpack_require__(/*! ./modules/_core */ 25);
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! babel-polyfill */122);
-module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/main.js */121);
+module.exports = __webpack_require__(/*! /Users/tedye/pg/repos/mindlinker/src/main.js */121);
 
 
 /***/ })

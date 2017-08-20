@@ -6,6 +6,7 @@ import config from '../../config'
 import Princess from '../../sprites/Princess'
 import PrincessAnimationPlayer from '../../animation/PrincessAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
+import {showBlock} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
@@ -172,12 +173,6 @@ export default class extends Phaser.State {
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
         this.loadPath()
-        if (typeof this.game.workspace === "undefined"){
-            // Only create blocks once
-            this.addWorkspace()
-        }
-        this.game.workspace.clear()
-        this.loadToolbox()
     }
 
     create() {
@@ -189,6 +184,13 @@ export default class extends Phaser.State {
         this.drawMainCharacterAtStartingPosition()
         this.addAnimationsForSprite(this.princess, this.gameContext.spritesheets)
         this.addAudios()
+        if (typeof this.game.workspace === "undefined"){
+            // Only create blocks once
+            this.addWorkspace()
+        }
+        this.game.workspace.clear()
+        this.loadToolbox()
+        showBlock()
     }
 
     onBackHome() {

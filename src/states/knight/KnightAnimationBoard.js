@@ -7,6 +7,7 @@ import Knight from '../../sprites/Knight'
 import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
+import {showBlock} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
@@ -313,12 +314,6 @@ export default class extends Phaser.State {
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
         this.preloadImages()
-        if (typeof this.game.workspace === "undefined"){
-            // Only create blocks once
-            this.addWorkspace()
-        }
-        this.game.workspace.clear()
-        this.loadToolbox()
     }
 
     create() {
@@ -333,6 +328,13 @@ export default class extends Phaser.State {
         this.drawForeGround()
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets)
         this.addAudios()
+        if (typeof this.game.workspace === "undefined"){
+            // Only create blocks once
+            this.addWorkspace()
+        }
+        this.game.workspace.clear()
+        this.loadToolbox()
+        showBlock()
     }
 
     onBackHome() {

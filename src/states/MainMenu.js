@@ -5,7 +5,7 @@ import Phaser from 'phaser'
 import KnightBootState from './knight/KnightBoot'
 import PrincessBootState from './princess/PrincessBoot'
 import TooltipBuilder from '../util/TooltipBuilder'
-import {setScaleAndAnchorForObject} from '../UIUtil'
+import {setScaleAndAnchorForObject, hideBlock} from '../UIUtil'
 import config from '../config'
 
 export default class extends Phaser.State {
@@ -49,6 +49,11 @@ export default class extends Phaser.State {
         /**let prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
         setScaleAndAnchorForObject(prevButton, 0.5, 0.5, 0.5, 0.5)
         TooltipBuilder(this.game, prevButton, '上一页', 'bottom')**/
+
+        /**
+         hide block in main menu
+         **/
+        hideBlock()
     }
 
     create() {
