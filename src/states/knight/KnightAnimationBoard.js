@@ -58,12 +58,12 @@ export default class extends Phaser.State {
     }
 
     drawBoardButtons() {
-        this.startButton = this.game.add.button(0, 0, 'start', this.play, this)
-        this.startButton.scale.setTo(0.3, 0.3)
-        this.hintButton = this.game.add.button(this.startButton.width + 20, 0, 'taskhint', null, this)
-        this.hintButton.scale.setTo(0.3, 0.3)
+        this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
+        this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', null, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
         TooltipBuilder(this.game, this.startButton, '开始', 'right')
         TooltipBuilder(this.game, this.hintButton, this.taskContext.hint, 'right')
+        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'right')
     }
 
     drawMainCharacterAtStartingPosition() {
@@ -333,5 +333,9 @@ export default class extends Phaser.State {
         this.drawForeGround()
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets)
         this.addAudios()
+    }
+
+    onBackHome() {
+        this.game.state.start('MainMenu')
     }
 }

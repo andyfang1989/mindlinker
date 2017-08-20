@@ -18,35 +18,33 @@ export default class extends Phaser.State {
         console.log('Main Menu Preload.')
         this.rootContext = JSON.parse(this.game.cache.getText('rootContext'))
         this.game.load.image('mainBackground', this.rootContext.main_background_image)
-        this.storyCount = this.rootContext.stories.length
-        let stories = this.rootContext.stories
-        for (let i = 0; i < stories.length; i++) {
-            let story = stories[i]
-            this.game.load.image(story.storyImageKey, story.storyImage)
+        let spriteSheets = this.rootContext.spritesheets
+        for (let i = 0; i < spriteSheets.length; i++) {
+            let spriteSheet = spriteSheets[i]
+            console.log('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
+            this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
         }
-
-        this.game.load.image('nextImage', 'assets/images/knight/next.png')
+        this.storyKey = 'Stories'
     }
 
     renderBackground() {
-        this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width/1440, this.game.height/900)
     }
 
     renderMenu() {
         let stories = this.rootContext.stories
-        let padding = this.game.width - Math.round((this.game.width - 600) / 2)
+        let padding = this.game.width - Math.round((this.game.width - 700) / 2)
         let x = padding - 75
-        let y = Math.round(this.game.height * 0.5)
+        let y = Math.round(this.game.height * 0.65)
         /**let nextButton = this.game.add.button(x, y, 'nextImage', this.onClickNext, this)
         setScaleAndAnchorForObject(nextButton, -0.5, 0.5, 0.5, 0.5)
         TooltipBuilder(this.game, nextButton, '下一页', 'bottom')**/
-        x -= 170
         for (let i = 0; i < 2; i++) {
             let story = stories[this.endIndex - i]
-            let storyButton = this.game.add.button(x, y, story.storyImageKey, this.onClickStory, {game: this.game, story: story, index: this.endIndex - i})
+            let storyButton = this.game.add.button(x, y, this.storyKey, this.onClickStory, {game: this.game, story: story, index: this.endIndex - i}, story.storyHoverImageKey, story.storyNormalImageKey, story.storyClickImageKey, story.storyDisabledImageKey)
             setScaleAndAnchorForObject(storyButton, 0.5, 0.5, 0.5, 0.5)
             TooltipBuilder(this.game, storyButton, story.storyName, 'bottom')
-            x -= 170
+            x -= 250
         }
         /**let prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
         setScaleAndAnchorForObject(prevButton, 0.5, 0.5, 0.5, 0.5)

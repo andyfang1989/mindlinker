@@ -24,13 +24,12 @@ export default class extends Phaser.Sprite {
     }
 
     showButtons() {
-        this.restartButton = this.game.add.button(this.game.world.centerX - 60, this.game.world.centerY, 'restart', this.restart, this)
-        this.restartButton.scale.setTo(0.3, 0.3)
+        this.restartButton = this.game.add.button(this.game.world.centerX - 60, this.game.world.centerY, 'Buttons', this.restart, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
         this.restartButton.anchor.setTo(0.5, 0.5)
         TooltipBuilder(this.game, this.restartButton, '重新开始', 'bottom')
         if (this.taskCompleted) {
-            this.nextButton = this.game.add.button(this.game.world.centerX + 60, this.game.world.centerY, 'next', this.nextGame, this)
-            this.nextButton.scale.setTo(-0.3, 0.3)
+            this.nextButton = this.game.add.button(this.game.world.centerX + 60, this.game.world.centerY, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            this.nextButton.scale.setTo(-1, 1)
             this.nextButton.anchor.setTo(0.5, 0.5)
         TooltipBuilder(this.game, this.nextButton, '开始下一关', 'bottom')
         }

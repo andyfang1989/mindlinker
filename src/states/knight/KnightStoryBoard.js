@@ -56,6 +56,8 @@ export default class extends Phaser.State {
     }
 
     renderTaskList() {
+        this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
+        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'right')
         let tasks = this.gameContext.task_configs.tasks
         let padding = this.game.width - Math.round((this.game.width - 750) / 2)
         let x = padding - 75
@@ -64,8 +66,8 @@ export default class extends Phaser.State {
             this.nextButton.destroy()
             this.nextButton = undefined
         } else if (this.endIndex < 9 && this.nextButton === undefined) {
-            this.nextButton = this.game.add.button(x, y, 'nextImage', this.onClickNext, this)
-            setScaleAndAnchorForObject(this.nextButton, -0.5, 0.5, 0.5, 0.5)
+            this.nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            setScaleAndAnchorForObject(this.nextButton, -1, 1, 0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '下一页', 'bottom')
         }
         x -= 170
@@ -80,8 +82,8 @@ export default class extends Phaser.State {
             this.prevButton.destroy()
             this.prevButton = undefined
         } else if (this.endIndex > 2 && (this.prevButton === undefined)) {
-            this.prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
-            setScaleAndAnchorForObject(this.prevButton, 0.5, 0.5, 0.5, 0.5)
+            this.prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            setScaleAndAnchorForObject(this.prevButton, 1, 1, 0.5, 0.5)
             TooltipBuilder(this.game, this.prevButton, '上一页', 'bottom')
         }
     }
@@ -113,5 +115,9 @@ export default class extends Phaser.State {
         this.game.state.add('KnightTaskBoot', KnightTaskBootState, false)
         this.game.global.currentTaskIndex = this.index
         this.game.state.start('KnightTaskBoot')
+    }
+
+    onBackHome() {
+        this.game.state.start('MainMenu')
     }
 }
