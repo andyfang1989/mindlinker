@@ -25,10 +25,6 @@ export default class extends Phaser.State {
         this.game.load.image('foreground', this.gameContext.foreground_image)
         this.game.load.image('grid', this.gameContext.grid_image)
         this.game.load.image('shadow', this.gameContext.shadow_image)
-        this.game.load.image('start', this.gameContext.start_button_image)
-        this.game.load.image('restart', this.gameContext.restart_button_image)
-        this.game.load.image('next', this.gameContext.next_button_image)
-        this.game.load.image('taskhint', this.gameContext.task_hint_image)
 
         for (let i = 0; i < this.gameContext.task_configs.tasks.length; i++) {
             let task = this.gameContext.task_configs.tasks[i]
@@ -73,8 +69,8 @@ export default class extends Phaser.State {
         x -= 170
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i]
-            let taskButton = this.game.add.button(x, y, task.taskImageKey, this.onClickTask, {game: this.game, task: task, index: this.endIndex - i})
-            setScaleAndAnchorForObject(taskButton, 0.5, 0.5, 0.5, 0.5)
+            let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: this.endIndex - i}, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey)
+            setScaleAndAnchorForObject(taskButton, 1, 1, 0.5, 0.5)
             TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
             x -= 170
         }
