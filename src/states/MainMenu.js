@@ -5,8 +5,7 @@ import Phaser from 'phaser'
 import KnightBootState from './knight/KnightBoot'
 import PrincessBootState from './princess/PrincessBoot'
 import TooltipBuilder from '../util/TooltipBuilder'
-import {setScaleAndAnchorForObject, hideBlock} from '../UIUtil'
-import config from '../config'
+import {setScaleAndAnchorForObject, hideBlock, createLoadingText} from '../UIUtil'
 
 export default class extends Phaser.State {
     init() {
@@ -17,14 +16,18 @@ export default class extends Phaser.State {
     preload() {
         console.log('Main Menu Preload.')
         this.rootContext = JSON.parse(this.game.cache.getText('rootContext'))
-        this.game.load.image('mainBackground', this.rootContext.main_background_image)
+    }
+
+    loadAssets() {
         let spriteSheets = this.rootContext.spritesheets
+        this.game.load.image('mainBackground', this.rootContext.main_background_image)
         for (let i = 0; i < spriteSheets.length; i++) {
             let spriteSheet = spriteSheets[i]
             console.log('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
             this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
         }
         this.storyKey = 'Stories'
+        this.game.load.start()
     }
 
     renderBackground() {
@@ -57,8 +60,16 @@ export default class extends Phaser.State {
     }
 
     create() {
-        this.renderBackground()
-        this.renderMenu()
+        console.log('Main Menu Create.')
+        if (!this.created) {
+            this.loadingText = createLoadingText(this.game)
+            this.game.load.onLoadStart.addOnce(this.loadStart, this);
+            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.loadAssets()
+        } else {
+            this.renderState()
+        }
     }
 
     /**
@@ -88,5 +99,24 @@ export default class extends Phaser.State {
         }
         console.log('About to start the story: ' + this.story.storyState)
         this.game.state.start(this.story.storyState)
+    }
+
+    loadStart() {
+        this.loadingText.setText("Loading ...")
+    }
+
+    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
+    }
+
+    loadComplete() {
+        this.renderState()
+        this.loadingText.destroy()
+        this.created = true
+    }
+
+    renderState() {
+        this.renderBackground()
+        this.renderMenu()
     }
 }

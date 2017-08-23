@@ -7,7 +7,7 @@ import Knight from '../../sprites/Knight'
 import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock} from '../../UIUtil'
+import {showBlock, createLoadingText} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
@@ -313,11 +313,45 @@ export default class extends Phaser.State {
         console.log('KnightAnimationBoard Preload.')
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
+    }
+
+    loadAssets() {
         this.preloadImages()
+        this.game.load.start()
     }
 
     create() {
         console.log('KnightAnimationBoard Create.')
+        if (!this.created) {
+            this.loadingText = createLoadingText(this.game)
+            this.game.load.onLoadStart.addOnce(this.loadStart, this);
+            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.loadAssets()
+        } else {
+            this.renderState()
+        }
+    }
+
+    onBackHome() {
+        this.game.state.start('MainMenu')
+    }
+
+    loadStart() {
+        this.loadingText.setText("Loading ...")
+    }
+
+    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
+    }
+
+    loadComplete() {
+        this.renderState()
+        this.loadingText.destroy()
+        this.created = true
+    }
+
+    renderState() {
         this.calculateAndSetGridPositionAndStepSizesResponsively()
         this.drawBackground()
         this.drawBoardButtons()
@@ -335,9 +369,5 @@ export default class extends Phaser.State {
         this.game.workspace.clear()
         this.loadToolbox()
         showBlock()
-    }
-
-    onBackHome() {
-        this.game.state.start('MainMenu')
     }
 }

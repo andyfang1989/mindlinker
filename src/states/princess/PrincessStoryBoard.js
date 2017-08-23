@@ -5,7 +5,7 @@ import Phaser from 'phaser'
 import PrincessAnimationBoardState from './PrincessAnimationBoard'
 import PrincessTaskBootState from './PrincessTaskBoot'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {setScaleAndAnchorForObject} from '../../UIUtil'
+import {setScaleAndAnchorForObject, createLoadingText} from '../../UIUtil'
 import config from '../../config'
 
 export default class extends Phaser.State {
@@ -22,11 +22,6 @@ export default class extends Phaser.State {
         }
 
         this.game.load.image('background', this.gameContext.background_image)
-
-        for (let i = 0; i < this.gameContext.task_configs.tasks.length; i++) {
-            let task = this.gameContext.task_configs.tasks[i]
-            this.game.load.image(task.taskImageKey, task.taskImage)
-        }
     }
 
     loadStoryAudios() {
@@ -44,8 +39,12 @@ export default class extends Phaser.State {
     preload() {
         console.log('PrincessStoryBoard Preload.')
         this.setCurrentGameContext()
+    }
+
+    loadAssets() {
         this.loadStoryImages()
         this.loadStoryAudios()
+        this.game.load.start()
     }
 
     renderTaskList() {
@@ -82,8 +81,16 @@ export default class extends Phaser.State {
     }
 
     create() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
-        this.renderTaskList()
+        console.log('Princess Story Board Create.')
+        if (!this.created) {
+            this.loadingText = createLoadingText(this.game)
+            this.game.load.onLoadStart.addOnce(this.loadStart, this);
+            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.loadAssets()
+        } else {
+            this.renderState()
+        }
     }
 
     onClickPrevious() {
@@ -112,5 +119,24 @@ export default class extends Phaser.State {
 
     onBackHome() {
         this.game.state.start('MainMenu')
+    }
+
+    loadStart() {
+        this.loadingText.setText("Loading ...")
+    }
+
+    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
+    }
+
+    loadComplete() {
+        this.renderState()
+        this.loadingText.destroy()
+        this.created = true
+    }
+    
+    renderState() {
+        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        this.renderTaskList()
     }
 }

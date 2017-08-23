@@ -6,7 +6,7 @@ import config from '../../config'
 import Princess from '../../sprites/Princess'
 import PrincessAnimationPlayer from '../../animation/PrincessAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock} from '../../UIUtil'
+import {showBlock, createLoadingText} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
@@ -172,11 +172,32 @@ export default class extends Phaser.State {
         console.log('PrincessAnimationBoard Preload.')
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
+    }
+
+    loadAssets() {
+        console.log('Load assets.')
         this.loadPath()
+        this.game.load.start()
     }
 
     create() {
         console.log('PrincessAnimationBoard Create.')
+        if (!this.created) {
+            this.loadingText = createLoadingText(this.game)
+            this.game.load.onLoadStart.addOnce(this.loadStart, this);
+            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.loadAssets()
+        } else {
+            this.renderState()
+        }
+    }
+
+    onBackHome() {
+        this.game.state.start('MainMenu')
+    }
+
+    renderState() {
         this.calculateCharacterStartingPositionResponsively()
         this.drawBackground()
         this.drawPath()
@@ -193,7 +214,17 @@ export default class extends Phaser.State {
         showBlock()
     }
 
-    onBackHome() {
-        this.game.state.start('MainMenu')
+    loadStart() {
+        this.loadingText.setText("Loading ...")
+    }
+
+    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
+    }
+
+    loadComplete() {
+        this.renderState()
+        this.loadingText.destroy()
+        this.created = true
     }
 }
