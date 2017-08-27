@@ -1568,8 +1568,8 @@ module.exports = exporter;
 
 /***/ }),
 /* 48 */
-/* exports provided: setScaleAndAnchorForObject, hideBlock, showBlock, createLoadingText */
-/* exports used: setScaleAndAnchorForObject, hideBlock, createLoadingText, showBlock */
+/* exports provided: setScaleAndAnchorForObject, hideBlock, showBlock, createLoadingText, loadStart, fileComplete */
+/* exports used: setScaleAndAnchorForObject, hideBlock, createLoadingText, loadStart, fileComplete, showBlock */
 /*!***********************!*\
   !*** ./src/UIUtil.js ***!
   \***********************/
@@ -1578,25 +1578,35 @@ module.exports = exporter;
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setScaleAndAnchorForObject;
 /* harmony export (immutable) */ __webpack_exports__["b"] = hideBlock;
-/* harmony export (immutable) */ __webpack_exports__["d"] = showBlock;
+/* harmony export (immutable) */ __webpack_exports__["f"] = showBlock;
 /* harmony export (immutable) */ __webpack_exports__["c"] = createLoadingText;
+/* harmony export (immutable) */ __webpack_exports__["d"] = loadStart;
+/* harmony export (immutable) */ __webpack_exports__["e"] = fileComplete;
 function setScaleAndAnchorForObject(obj, sX, sY, aX, aY) {
     obj.scale.setTo(sX, sY);
     obj.anchor.setTo(aX, aY);
 }
 
 function hideBlock() {
-    document.getElementById('block').style.visibility = 'hidden';
+    document.getElementById('block').style.display = 'none';
 }
 
 function showBlock() {
-    document.getElementById('block').style.visibility = 'visible';
+    document.getElementById('block').style.display = 'block';
 }
 
 function createLoadingText(game) {
-    let loadingText = game.add.text(game.world.centerX, game.world.centerY, 'Loading...', { font: "65px Arial", fill: "#F3FF33", align: "center" });
+    let loadingText = game.add.text(game.world.centerX, game.world.centerY, '努力加载中...', { font: "65px Arial", fill: "#F3FF33", align: "center" });
     loadingText.anchor.set(0.5);
     return loadingText;
+}
+
+function loadStart() {
+    this.loadingText.setText("努力加载中 ...");
+}
+
+function fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
+    this.loadingText.setText("已完成: " + progress + '%');
 }
 
 /***/ }),
@@ -3923,7 +3933,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class Game extends __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.Game {
     constructor() {
-        super(window.screen.availWidth, window.screen.availHeight * 0.83, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', null);
+        super(window.screen.availWidth, window.screen.availHeight, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', null);
 
         this.state.add('RootBoot', __WEBPACK_IMPORTED_MODULE_3__states_RootBoot__["a" /* default */], false);
         this.state.start('RootBoot');
@@ -4999,6 +5009,7 @@ function play(animationContext) {
     }
 
     renderBackground() {
+        console.log('Game width: ' + this.game.width + ' Game Height: ' + this.game.height);
         this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width / 1440, this.game.height / 900);
     }
 
@@ -5031,8 +5042,8 @@ function play(animationContext) {
         console.log('Main Menu Create.');
         if (!this.created) {
             this.loadingText = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* createLoadingText */])(this.game);
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["d" /* loadStart */], this);
+            this.game.load.onFileComplete.add(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["e" /* fileComplete */], this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets();
         } else {
@@ -5066,14 +5077,6 @@ function play(animationContext) {
         }
         console.log('About to start the story: ' + this.story.storyState);
         this.game.state.start(this.story.storyState);
-    }
-
-    loadStart() {
-        this.loadingText.setText("Loading ...");
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
     }
 
     loadComplete() {
@@ -5209,9 +5212,9 @@ function play(animationContext) {
         this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
         this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', null, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
         this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'right');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, this.taskContext.hint, 'right');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'right');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, this.taskContext.hint, 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'bottom');
     }
 
     drawMainCharacterAtStartingPosition() {
@@ -5471,8 +5474,8 @@ function play(animationContext) {
         console.log('KnightAnimationBoard Create.');
         if (!this.created) {
             this.loadingText = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["c" /* createLoadingText */])(this.game);
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["d" /* loadStart */], this);
+            this.game.load.onFileComplete.add(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["e" /* fileComplete */], this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets();
         } else {
@@ -5482,14 +5485,6 @@ function play(animationContext) {
 
     onBackHome() {
         this.game.state.start('MainMenu');
-    }
-
-    loadStart() {
-        this.loadingText.setText("Loading ...");
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
     }
 
     loadComplete() {
@@ -5515,7 +5510,7 @@ function play(animationContext) {
         }
         this.game.workspace.clear();
         this.loadToolbox();
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["d" /* showBlock */])();
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__UIUtil__["f" /* showBlock */])();
     }
 });
 
@@ -5568,11 +5563,9 @@ function play(animationContext) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__KnightTaskBoot__ = __webpack_require__(/*! ./KnightTaskBoot */ 134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__ = __webpack_require__(/*! ../../util/TooltipBuilder */ 33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__UIUtil__ = __webpack_require__(/*! ../../UIUtil */ 48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__(/*! ../../config */ 32);
 /**
  * Created by kfang on 6/25/17.
  */
-
 
 
 
@@ -5623,7 +5616,7 @@ function play(animationContext) {
 
     renderTaskList() {
         this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'right');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'bottom');
         let tasks = this.gameContext.task_configs.tasks;
         let padding = this.game.width - Math.round((this.game.width - 750) / 2);
         let x = padding - 75;
@@ -5640,9 +5633,9 @@ function play(animationContext) {
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i];
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: this.endIndex - i }, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* setScaleAndAnchorForObject */])(taskButton, 1, 1, 0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* setScaleAndAnchorForObject */])(taskButton, 1.5, 1.5, 0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
-            x -= 170;
+            x -= 200;
         }
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy();
@@ -5658,8 +5651,8 @@ function play(animationContext) {
         console.log('Knight Story Board Create.');
         if (!this.created) {
             this.loadingText = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* createLoadingText */])(this.game);
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["d" /* loadStart */], this);
+            this.game.load.onFileComplete.add(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["e" /* fileComplete */], this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets();
         } else {
@@ -5695,14 +5688,6 @@ function play(animationContext) {
         this.game.state.start('MainMenu');
     }
 
-    loadStart() {
-        this.loadingText.setText("Loading ...");
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
-    }
-
     loadComplete() {
         this.renderState();
         this.loadingText.destroy();
@@ -5710,7 +5695,7 @@ function play(animationContext) {
     }
 
     renderState() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width / __WEBPACK_IMPORTED_MODULE_5__config__["a" /* default */].backgroundWidth, this.game.height / 650);
+        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width / 1440, this.game.height / 700);
         this.renderTaskList();
     }
 });
@@ -5826,9 +5811,9 @@ function play(animationContext) {
         this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
         this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', null, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
         this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'right');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, this.taskContext.hint, 'right');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'right');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, this.taskContext.hint, 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'bottom');
     }
 
     drawMainCharacterAtStartingPosition() {
@@ -5948,8 +5933,8 @@ function play(animationContext) {
         console.log('PrincessAnimationBoard Create.');
         if (!this.created) {
             this.loadingText = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["c" /* createLoadingText */])(this.game);
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["d" /* loadStart */], this);
+            this.game.load.onFileComplete.add(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["e" /* fileComplete */], this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets();
         } else {
@@ -5975,15 +5960,7 @@ function play(animationContext) {
         }
         this.game.workspace.clear();
         this.loadToolbox();
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["d" /* showBlock */])();
-    }
-
-    loadStart() {
-        this.loadingText.setText("Loading ...");
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["f" /* showBlock */])();
     }
 
     loadComplete() {
@@ -6045,11 +6022,9 @@ function play(animationContext) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PrincessTaskBoot__ = __webpack_require__(/*! ./PrincessTaskBoot */ 138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__ = __webpack_require__(/*! ../../util/TooltipBuilder */ 33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__UIUtil__ = __webpack_require__(/*! ../../UIUtil */ 48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config__ = __webpack_require__(/*! ../../config */ 32);
 /**
  * Created by kfang on 7/23/17.
  */
-
 
 
 
@@ -6097,7 +6072,7 @@ function play(animationContext) {
 
     renderTaskList() {
         this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'right');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.homeButton, '返回主界面', 'bottom');
         let tasks = this.gameContext.task_configs.tasks;
         let padding = this.game.width - Math.round((this.game.width - 750) / 2);
         let x = padding - 75;
@@ -6114,7 +6089,7 @@ function play(animationContext) {
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i];
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: this.endIndex - i }, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* setScaleAndAnchorForObject */])(taskButton, 1, 1, 0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* setScaleAndAnchorForObject */])(taskButton, 1.5, 1.5, 0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
             x -= 170;
         }
@@ -6132,8 +6107,8 @@ function play(animationContext) {
         console.log('Princess Story Board Create.');
         if (!this.created) {
             this.loadingText = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* createLoadingText */])(this.game);
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["d" /* loadStart */], this);
+            this.game.load.onFileComplete.add(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["e" /* fileComplete */], this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets();
         } else {
@@ -6169,14 +6144,6 @@ function play(animationContext) {
         this.game.state.start('MainMenu');
     }
 
-    loadStart() {
-        this.loadingText.setText("Loading ...");
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
-    }
-
     loadComplete() {
         this.renderState();
         this.loadingText.destroy();
@@ -6184,7 +6151,7 @@ function play(animationContext) {
     }
 
     renderState() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width / __WEBPACK_IMPORTED_MODULE_5__config__["a" /* default */].backgroundWidth, this.game.height / __WEBPACK_IMPORTED_MODULE_5__config__["a" /* default */].backgroundHeight);
+        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width / 1440, this.game.height / 900);
         this.renderTaskList();
     }
 });

@@ -5,7 +5,7 @@ import Phaser from 'phaser'
 import KnightBootState from './knight/KnightBoot'
 import PrincessBootState from './princess/PrincessBoot'
 import TooltipBuilder from '../util/TooltipBuilder'
-import {setScaleAndAnchorForObject, hideBlock, createLoadingText} from '../UIUtil'
+import {setScaleAndAnchorForObject, hideBlock, createLoadingText, loadStart, fileComplete} from '../UIUtil'
 
 export default class extends Phaser.State {
     init() {
@@ -31,6 +31,7 @@ export default class extends Phaser.State {
     }
 
     renderBackground() {
+        console.log('Game width: ' + this.game.width + ' Game Height: ' + this.game.height)
         this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width/1440, this.game.height/900)
     }
 
@@ -63,8 +64,8 @@ export default class extends Phaser.State {
         console.log('Main Menu Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(loadStart, this);
+            this.game.load.onFileComplete.add(fileComplete, this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets()
         } else {
@@ -99,14 +100,6 @@ export default class extends Phaser.State {
         }
         console.log('About to start the story: ' + this.story.storyState)
         this.game.state.start(this.story.storyState)
-    }
-
-    loadStart() {
-        this.loadingText.setText("Loading ...")
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
     }
 
     loadComplete() {

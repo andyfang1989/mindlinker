@@ -5,8 +5,7 @@ import Phaser from 'phaser'
 import PrincessAnimationBoardState from './PrincessAnimationBoard'
 import PrincessTaskBootState from './PrincessTaskBoot'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {setScaleAndAnchorForObject, createLoadingText} from '../../UIUtil'
-import config from '../../config'
+import {setScaleAndAnchorForObject, createLoadingText, loadStart, fileComplete} from '../../UIUtil'
 
 export default class extends Phaser.State {
     init() {
@@ -49,7 +48,7 @@ export default class extends Phaser.State {
 
     renderTaskList() {
         this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'right')
+        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
         let tasks = this.gameContext.task_configs.tasks
         let padding = this.game.width - Math.round((this.game.width - 750) / 2)
         let x = padding - 75
@@ -66,7 +65,7 @@ export default class extends Phaser.State {
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i]
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: this.endIndex - i}, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey)
-            setScaleAndAnchorForObject(taskButton, 1, 1, 0.5, 0.5)
+            setScaleAndAnchorForObject(taskButton, 1.5, 1.5, 0.5, 0.5)
             TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
             x -= 170
         }
@@ -84,8 +83,8 @@ export default class extends Phaser.State {
         console.log('Princess Story Board Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(loadStart, this);
+            this.game.load.onFileComplete.add(fileComplete, this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets()
         } else {
@@ -121,14 +120,6 @@ export default class extends Phaser.State {
         this.game.state.start('MainMenu')
     }
 
-    loadStart() {
-        this.loadingText.setText("Loading ...")
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
-    }
-
     loadComplete() {
         this.renderState()
         this.loadingText.destroy()
@@ -136,7 +127,7 @@ export default class extends Phaser.State {
     }
     
     renderState() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/1440, this.game.height/900)
         this.renderTaskList()
     }
 }

@@ -7,7 +7,7 @@ import Knight from '../../sprites/Knight'
 import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock, createLoadingText} from '../../UIUtil'
+import {showBlock, createLoadingText, loadStart, fileComplete} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
@@ -62,9 +62,9 @@ export default class extends Phaser.State {
         this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
         this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', null, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
         this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
-        TooltipBuilder(this.game, this.startButton, '开始', 'right')
-        TooltipBuilder(this.game, this.hintButton, this.taskContext.hint, 'right')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'right')
+        TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
+        TooltipBuilder(this.game, this.hintButton, this.taskContext.hint, 'bottom')
+        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
     }
 
     drawMainCharacterAtStartingPosition() {
@@ -324,8 +324,8 @@ export default class extends Phaser.State {
         console.log('KnightAnimationBoard Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
-            this.game.load.onLoadStart.addOnce(this.loadStart, this);
-            this.game.load.onFileComplete.add(this.fileComplete, this);
+            this.game.load.onLoadStart.addOnce(loadStart, this);
+            this.game.load.onFileComplete.add(fileComplete, this);
             this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
             this.loadAssets()
         } else {
@@ -335,14 +335,6 @@ export default class extends Phaser.State {
 
     onBackHome() {
         this.game.state.start('MainMenu')
-    }
-
-    loadStart() {
-        this.loadingText.setText("Loading ...")
-    }
-
-    fileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
-        this.loadingText.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles)
     }
 
     loadComplete() {
