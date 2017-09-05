@@ -7,7 +7,7 @@ import Knight from '../../sprites/Knight'
 import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock, createLoadingText, loadStart, fileComplete} from '../../UIUtil'
+import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
@@ -21,8 +21,9 @@ export default class extends Phaser.State {
 
     getInstructionFromWorkspace() {
         let startBlock = this.game.workspace.getTopBlocks()[0]
-        return Blockly.JavaScript[startBlock.type](startBlock);
-
+        let code = Blockly.JavaScript[startBlock.type](startBlock)
+        document.getElementById('instructions').innerHTML = code
+        return code
     }
 
     getCurrentAnimationContext() {
@@ -268,6 +269,13 @@ export default class extends Phaser.State {
     }
 
     addWorkspace() {
+        /* Reposition block div first */
+        let grid_bottom_left_x = Math.round(this.gridStartX)
+        let grid_height = this.gameContext.grid_y_size * this.step_height_in_pixel
+        let grid_bottom_left_y = Math.round(this.gridStartY + grid_height)
+        repositionBlock(grid_bottom_left_x, grid_bottom_left_y, this.game.height)
+        repositionText(this.gridStartY, grid_height, grid_bottom_left_x)
+        console.log('Block div x: ' + grid_bottom_left_x + ' yt: ' + grid_bottom_left_y + ' h: ' + this.game.height)
         let options = {
             comments: false,
             disable: false,
@@ -297,7 +305,7 @@ export default class extends Phaser.State {
                 dragShadowOpacity: 0.6
             }
         }
-        this.game.workspace = Blockly.inject('block', options);
+        this.game.workspace = Blockly.inject('block', options)
     }
 
     loadToolbox() {

@@ -17,8 +17,9 @@ export default class extends Phaser.State {
 
     getInstructionFromWorkspace() {
         let startBlock = this.game.workspace.getTopBlocks()[0]
-        return Blockly.JavaScript[startBlock.type](startBlock);
-
+        let code = Blockly.JavaScript[startBlock.type](startBlock)
+        document.getElementById('instructions').innerHTML = code
+        return code
     }
 
     getCurrentAnimationContext() {
@@ -132,6 +133,10 @@ export default class extends Phaser.State {
     }
 
     addWorkspace() {
+        /* Reposition block div first */
+        repositionBlock(252, 744, this.game.height)
+        repositionText(429, 315, 252)
+        console.log('Block div x: ' + grid_bottom_left_x + ' yt: ' + grid_bottom_left_y + ' h: ' + this.game.height)
         let options = {
             comments: false,
             disable: false,
