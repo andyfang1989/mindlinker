@@ -4853,12 +4853,14 @@ function play(animationContext) {
     restart() {
         this.game.sound.play('press');
         this.destroyAllButtons();
+        this.game.global.preTaskIndex = this.game.global.currentTaskIndex;
         this.game.state.start('KnightTaskBoot');
     }
 
     nextGame() {
         this.game.sound.play('press');
         this.destroyAllButtons();
+        this.game.global.preTaskIndex = this.game.global.currentTaskIndex;
         this.game.global.currentTaskIndex = this.game.global.currentTaskIndex + 1;
         this.game.state.start('KnightTaskBoot');
     }
@@ -4911,7 +4913,16 @@ function play(animationContext) {
             }
         } else if (this.start && this.actionQueue.length === 0 && this.playingAnimation !== null && this.playingAnimation.isFinished) {
             this.drawLine();
+            this.playFinalSound();
             this.showButtons();
+        }
+    }
+
+    playFinalSound() {
+        if (this.taskCompleted) {
+            this.game.sound.play('victory');
+        } else {
+            this.game.sound.play('fail');
         }
     }
 
@@ -4961,12 +4972,14 @@ function play(animationContext) {
     restart() {
         this.game.sound.play('press');
         this.destroyAllButtons();
+        this.game.global.preTaskIndex = this.game.global.currentTaskIndex;
         this.game.state.start('PrincessTaskBoot');
     }
 
     nextGame() {
         this.game.sound.play('press');
         this.destroyAllButtons();
+        this.game.global.preTaskIndex = this.game.global.currentTaskIndex;
         this.game.global.currentTaskIndex = this.game.global.currentTaskIndex + 1;
         this.game.state.start('PrincessTaskBoot');
     }
@@ -5488,6 +5501,9 @@ function play(animationContext) {
 
     init() {
         console.log('KnightAnimationBoard Init.');
+        if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
+            this.created = false;
+        }
     }
 
     preload() {
@@ -5805,8 +5821,8 @@ function play(animationContext) {
 /* harmony default export */ __webpack_exports__["a"] = (class extends __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.State {
     calculateCharacterStartingPositionResponsively() {
         console.log('Game width: ' + this.game.width + ' height: ' + this.game.height);
-        this.characterStartX = Math.round(this.game.width * this.taskContext.character_starting_x_percentage);
-        this.characterStartY = Math.round(this.game.height * this.taskContext.character_starting_y_percentage);
+        this.characterStartX = Math.round(this.game.width / 2);
+        this.characterStartY = Math.round(this.game.height / 2);
     }
 
     getInstructionFromWorkspace() {
@@ -5850,8 +5866,8 @@ function play(animationContext) {
     }
 
     drawMainCharacterAtStartingPosition() {
-        let startX = this.characterStartX;
-        let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3);
+        let startX = this.characterStartX + this.taskContext.character_x_offset;
+        let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3) + this.taskContext.character_y_offset;
         let frames = ["animation/walk-0/walk-0-0000", "animation/walk-1/walk-1-0000", "animation/walk-2/walk-2-0000", "animation/walk-3/walk-3-0000", "animation/walk-4/walk-4-0000", "animation/walk-5/walk-5-0000", "animation/walk-6/walk-6-0000", "animation/walk-7/walk-7-0000", "animation/walk-8/walk-8-0000", "animation/walk-9/walk-9-0000", "animation/walk-10/walk-10-0000", "animation/walk-11/walk-11-0000"];
         console.log('Draw main character at location: x = ' + startX + ' and y = ' + startY);
         console.log('The starting sprite image is ' + frames[this.taskContext.character_starting_clock_position]);
@@ -5951,6 +5967,9 @@ function play(animationContext) {
 
     init() {
         console.log('PrincessAnimationBoard Init.');
+        if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
+            this.created = false;
+        }
     }
 
     preload() {
@@ -6086,6 +6105,7 @@ function play(animationContext) {
     loadStoryAudios() {
         for (let i = 0; i < this.gameContext.audios.length; i++) {
             let audio = this.gameContext.audios[i];
+            console.log('Load sound ' + audio.key + ' from ' + audio.file);
             this.game.load.audio(audio.key, audio.file);
         }
     }
@@ -12336,7 +12356,7 @@ module.exports = __webpack_require__(/*! ./modules/_core */ 25);
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! babel-polyfill */122);
-module.exports = __webpack_require__(/*! /Users/tedye/pg/repos/mindlinker/src/main.js */121);
+module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/main.js */121);
 
 
 /***/ })

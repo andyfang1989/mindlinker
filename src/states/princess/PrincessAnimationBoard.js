@@ -11,8 +11,8 @@ import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
         console.log('Game width: ' + this.game.width + ' height: ' + this.game.height)
-        this.characterStartX = Math.round(this.game.width * this.taskContext.character_starting_x_percentage)
-        this.characterStartY = Math.round(this.game.height * this.taskContext.character_starting_y_percentage)
+        this.characterStartX = Math.round(this.game.width / 2)
+        this.characterStartY = Math.round(this.game.height / 2)
     }
 
     getInstructionFromWorkspace() {
@@ -56,8 +56,8 @@ export default class extends Phaser.State {
     }
 
     drawMainCharacterAtStartingPosition() {
-        let startX = this.characterStartX
-        let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3)
+        let startX = this.characterStartX + this.taskContext.character_x_offset
+        let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3) + this.taskContext.character_y_offset
         let frames = [
             "animation/walk-0/walk-0-0000",
             "animation/walk-1/walk-1-0000",
@@ -170,6 +170,9 @@ export default class extends Phaser.State {
 
     init() {
         console.log('PrincessAnimationBoard Init.')
+        if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
+            this.created = false
+        }
     }
 
     preload() {

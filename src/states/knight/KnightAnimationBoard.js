@@ -315,6 +315,9 @@ export default class extends Phaser.State {
 
     init() {
         console.log('KnightAnimationBoard Init.')
+        if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
+            this.created = false
+        }
     }
 
     preload() {
