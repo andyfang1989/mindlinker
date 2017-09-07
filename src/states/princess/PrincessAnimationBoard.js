@@ -6,7 +6,7 @@ import config from '../../config'
 import Princess from '../../sprites/Princess'
 import PrincessAnimationPlayer from '../../animation/PrincessAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText} from '../../UIUtil'
+import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode} from '../../UIUtil'
 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
@@ -15,21 +15,16 @@ export default class extends Phaser.State {
         this.characterStartY = Math.round(this.game.height / 2)
     }
 
-    getInstructionFromWorkspace() {
-        let startBlock = this.game.workspace.getTopBlocks()[0]
-        let code = Blockly.JavaScript[startBlock.type](startBlock)
-        document.getElementById('instructions').innerHTML = code
-        return code
-    }
-
     getCurrentAnimationContext() {
-        console.log('Blockly Instruction: ' + this.getInstructionFromWorkspace())
+        let instruction = getInstruction(this.game.workspace)
+        console.log('Blockly Instruction: ' + instruction)
+        setReadableCode(instruction)
         return {
             sprite: this.princess,
             startClockPosition: this.taskContext.character_starting_clock_position,
             maxSteps: this.taskContext.maxSteps,
             passPath: this.taskContext.passPath,
-            instruction: this.getInstructionFromWorkspace()
+            instruction: instruction
         }
     }
 
@@ -166,6 +161,7 @@ export default class extends Phaser.State {
     loadToolbox() {
         let tree = Blockly.Xml.textToDom(this.taskContext.toolbox)
         this.game.workspace.updateToolbox(tree)
+        document.getElementById('instructions').innerHTML = ''
     }
 
     init() {

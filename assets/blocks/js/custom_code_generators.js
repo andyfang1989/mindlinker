@@ -38,7 +38,7 @@ Blockly.JavaScript['statement_jump'] = motionCodeGenerator('{"name":"Jump"},');
 Blockly.JavaScript['statement_jump_left'] = motionCodeGenerator('{"name":"JumpLeft"},');
 Blockly.JavaScript['statement_jump_right'] = motionCodeGenerator('{"name":"JumpRight"},');
 Blockly.JavaScript['statement_turn'] = function(block) {
-    let instruction = '{"name":"Turn"},\n';
+    let instruction = '{"name":"Turn"},';
     let childBlocks = block.childBlocks_;
     if (childBlocks.length > 0){
         let nextBlock = childBlocks[0];
@@ -93,4 +93,3 @@ Blockly.JavaScript['statement_walk'] = function(block) {
     }
     return instruction;
 };
-
