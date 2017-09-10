@@ -351,7 +351,7 @@ export default class extends Phaser.State {
     }
 
     drawTitle() {
-        this.game.add.text(Math.round(this.game.width / 2) - 50, 70, this.taskContext.title, {font: 'bold 30px Arial', fill: '#FFC300', align: 'center'})
+        this.game.add.text(Math.round(this.game.width / 2) - 50, 55, this.taskContext.title, {font: 'bold 30px Arial', fill: '#FFC300', align: 'center'})
     }
 
     renderState() {
