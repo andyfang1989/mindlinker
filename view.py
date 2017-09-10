@@ -14,6 +14,7 @@ from jinja2 import TemplateNotFound
 
 import forms
 import models
+import requests
 from app import admin
 from app import app
 from app import login_manager
@@ -52,6 +53,11 @@ def login():
                 flash('登录失败!')
     return render_template('/auth/login.html')
 
+def recaptchaCheck(token):
+    payload = {'secret':'6LcmFDAUAAAAAKjJLxCR1FVCzZInYI63z_k_8hRI', 'response': token}
+    res = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
+    current_app.logger.info(res.json())
+    return res.json()['success']
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -61,6 +67,8 @@ def register():
         current_app.logger.info(register_form.errors)
         return '注册失败！'
     elif request.method == 'POST' and register_form.validate():
+        if not recaptchaCheck(request.form['g-recaptcha-response']):
+            return '请点击机器人监测!'
         email = request.form['email']
         password_hash = flask_bcrypt.generate_password_hash(
             request.form['password'],
