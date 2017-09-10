@@ -68,7 +68,7 @@ def register():
         return '注册失败！'
     elif request.method == 'POST' and register_form.validate():
         if not recaptchaCheck(request.form['g-recaptcha-response']):
-            return '请点击机器人监测!'
+            return '请点击人机身份验证!'
         email = request.form['email']
         password_hash = flask_bcrypt.generate_password_hash(
             request.form['password'],
