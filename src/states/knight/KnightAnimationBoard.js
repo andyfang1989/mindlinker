@@ -350,6 +350,10 @@ export default class extends Phaser.State {
         this.created = true
     }
 
+    drawTitle() {
+        this.game.add.text(Math.round(this.game.width / 2) - 50, 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#FFC300', align: 'center'})
+    }
+
     renderState() {
         this.calculateAndSetGridPositionAndStepSizesResponsively()
         this.drawBackground()
@@ -359,6 +363,7 @@ export default class extends Phaser.State {
         this.drawMainCharacterAtStartingPosition()
         this.drawInteractionItems()
         this.drawForeGround()
+        this.drawTitle()
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets)
         this.addAudios()
         if (typeof this.game.workspace === "undefined"){

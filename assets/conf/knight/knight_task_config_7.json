@@ -77,7 +77,8 @@
       "path":[],
       "interactions": []
    },
-   "hint":"控制骑士跳过障碍物。",
+   "title":"第七关\n跳过木桩",
+   "hint":"控制骑士跳过木桩。",
    "testScript": "[{\"name\":\"JumpRight\"}]",
    "toolbox": "<xml id=\"toolbox-knight\" style=\"display: none\"><block type=\"statement_start\"></block><block type=\"statement_jump_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block></xml>"
 }

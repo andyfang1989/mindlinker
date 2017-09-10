@@ -106,6 +106,7 @@
       "path": [],
       "interactions": []
    },
+   "title":"第八关\n翻山越岭",
    "hint": "控制骑士跳开障碍物并行走至战旗位置。",
    "testScript": "[{\"name\":\"RepeatStart\", \"count\":2},{\"name\":\"RepeatStart\", \"count\":2},{\"name\":\"WalkRight\"},{\"name\":\"RepeatEnd\"},{\"name\":\"JumpRight\"},{\"name\":\"RepeatEnd\"}]",
    "toolbox": "<xml id=\"toolbox-knight\" style=\"display: none\"><block type=\"statement_start\"></block><block type=\"statement_walk_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_jump_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_repeat\"><value name=\"TIMES\"><shadow type=\"math_positive_number\"><field name=\"NUM\">2</field></shadow></value></block></xml>"

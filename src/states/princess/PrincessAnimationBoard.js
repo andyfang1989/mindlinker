@@ -200,12 +200,17 @@ export default class extends Phaser.State {
         this.game.state.start('MainMenu')
     }
 
+    drawTitle() {
+        this.game.add.text(Math.round(this.game.width / 2) - 50, 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#FFC300', align: 'center'})
+    }
+
     renderState() {
         this.calculateCharacterStartingPositionResponsively()
         this.drawBackground()
         this.drawPath()
         this.drawBoardButtons()
         this.drawMainCharacterAtStartingPosition()
+        this.drawTitle()
         this.addAnimationsForSprite(this.princess, this.gameContext.spritesheets)
         this.addAudios()
         if (typeof this.game.workspace === "undefined"){
