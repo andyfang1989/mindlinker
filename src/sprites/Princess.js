@@ -46,15 +46,17 @@ export default class extends Phaser.Sprite {
 
     showButtons() {
         this.start = false
-        this.restartButton = this.game.add.button(this.game.world.centerX - 60, this.game.world.centerY, 'Buttons', this.restart, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
-        this.restartButton.anchor.setTo(0.5, 0.5)
-        TooltipBuilder(this.game, this.restartButton, '重新开始', 'bottom')
+        let offset = 0
         if (this.taskCompleted) {
-            this.nextButton = this.game.add.button(this.game.world.centerX + 60, this.game.world.centerY, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            this.nextButton = this.game.add.button(this.game.world.width - 75, 50, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
             this.nextButton.scale.setTo(-1, 1)
             this.nextButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '开始下一关', 'bottom')
+            offset += 75
         }
+        this.restartButton = this.game.add.button(this.game.world.width - 95 - offset, 50, 'Buttons', this.restart, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+        this.restartButton.anchor.setTo(0.5, 0.5)
+        TooltipBuilder(this.game, this.restartButton, '重新开始', 'bottom')
     }
 
     playNextAction() {
