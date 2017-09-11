@@ -1,11 +1,8 @@
 .PHONY: local_python, local_npm, clean
 
 local_python: requirements.txt
-	cp -r dist assets/
+	npm run dev && cp -r dist assets/
 	virtualenv -ppython2.7 venv && source venv/bin/activate && pip install -r requirements.txt && heroku local
-
-local_npm:
-	npm run dev
 
 clean:
 	rm -rf venv/
