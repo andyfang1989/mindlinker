@@ -3897,6 +3897,7 @@
       }
    ],
    "background_image":"assets/images/princess/background/background.jpg",
+   "info_image":"assets/images/princess/background/info.png",
    "audios":[  
       {  
          "key":"walk",

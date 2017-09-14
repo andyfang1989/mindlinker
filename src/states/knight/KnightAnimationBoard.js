@@ -56,10 +56,10 @@ export default class extends Phaser.State {
 
     drawBoardButtons() {
         this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', null, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
         this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
         TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
-        TooltipBuilder(this.game, this.hintButton, this.taskContext.hint, 'bottom')
+        TooltipBuilder(this.game, this.hintButton, '关卡信息', 'bottom')
         TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
     }
 
@@ -338,6 +338,30 @@ export default class extends Phaser.State {
         } else {
             this.renderState()
         }
+    }
+
+    showInformationBoard() {
+        if (!this.infoBoard) {
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2),'info')
+            this.infoBoard.anchor.setTo(0.5, 0.5)
+            this.infoBoard.scale.setTo(0.7,0.7)
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            this.info.anchor.setTo(0.5, 0.5)
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-185, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            this.closeButton.anchor.setTo(0.5, 0.5)
+            this.closeButton.scale.setTo(0.5, 0.5)
+            TooltipBuilder(this.game, this.closeButton, '返回', 'bottom')
+        } else {
+            this.infoBoard.visible = true
+            this.info.visible = true
+            this.closeButton.visible = true
+        }
+    }
+
+    hideInformationBoard() {
+        this.infoBoard.visible = false
+        this.info.visible = false
+        this.closeButton.visible = false
     }
 
     onBackHome() {

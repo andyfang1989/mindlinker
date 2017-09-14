@@ -38,17 +38,17 @@ export default class extends Phaser.State {
     renderMenu() {
         let stories = this.rootContext.stories
         let padding = this.game.width - Math.round((this.game.width - 700) / 2)
-        let x = padding - 75
-        let y = Math.round(this.game.height * 0.65)
+        let x = padding
+        let y = Math.round(this.game.height * 0.55)
         /**let nextButton = this.game.add.button(x, y, 'nextImage', this.onClickNext, this)
         setScaleAndAnchorForObject(nextButton, -0.5, 0.5, 0.5, 0.5)
         TooltipBuilder(this.game, nextButton, '下一页', 'bottom')**/
         for (let i = 0; i < 2; i++) {
             let story = stories[this.endIndex - i]
             let storyButton = this.game.add.button(x, y, this.storyKey, this.onClickStory, {game: this.game, story: story, index: this.endIndex - i}, story.storyHoverImageKey, story.storyNormalImageKey, story.storyClickImageKey, story.storyDisabledImageKey)
-            setScaleAndAnchorForObject(storyButton, 0.5, 0.5, 0.5, 0.5)
+            setScaleAndAnchorForObject(storyButton, 1, 1, 0.5, 0.5)
             TooltipBuilder(this.game, storyButton, story.storyName, 'bottom')
-            x -= 250
+            x -= 400
         }
         /**let prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
         setScaleAndAnchorForObject(prevButton, 0.5, 0.5, 0.5, 0.5)

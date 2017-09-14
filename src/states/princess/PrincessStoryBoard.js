@@ -21,6 +21,7 @@ export default class extends Phaser.State {
         }
 
         this.game.load.image('background', this.gameContext.background_image)
+        this.game.load.image('info', this.gameContext.info_image)
     }
 
     loadStoryAudios() {
@@ -128,7 +129,7 @@ export default class extends Phaser.State {
     }
     
     renderState() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/1440, this.game.height/900)
+        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/1440, this.game.height/700)
         this.renderTaskList()
     }
 }
