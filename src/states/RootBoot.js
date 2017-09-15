@@ -25,7 +25,7 @@ export default class extends Phaser.State {
         this.logo.anchor.setTo(0.5, 0.5)
         this.logo.scale.setTo(10,10)
         this.logo.alpha = 0.2
-        this.logoTween = this.game.add.tween(this.logo).to( { alpha: 1 }, 1500, Phaser.Easing.Linear.None, true, 0, 2, true)
+        this.logoTween = this.game.add.tween(this.logo).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1, true)
     }
 
     render() {

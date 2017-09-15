@@ -34,6 +34,8 @@ def main():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST' and 'email' in request.form:
+        if not recaptchaCheck(request.form['g-recaptcha-response']):
+            return '请点击人机身份验证!'
         email = request.form['email']
         user_obj = User()
         user = user_obj.get_by_email_w_password(email)
