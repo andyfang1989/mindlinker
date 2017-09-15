@@ -5091,6 +5091,9 @@ function play(animationContext) {
     }
 
     renderMenu() {
+        let logo = this.game.add.sprite(this.game.world.centerX - 400, this.game.world.centerY - 100, 'logo');
+        logo.anchor.setTo(0.5, 0.5);
+        logo.scale.setTo(0.3, 0.3);
         let stories = this.rootContext.stories;
         let padding = this.game.width - Math.round((this.game.width - 700) / 2);
         let x = padding;
@@ -5200,14 +5203,14 @@ function play(animationContext) {
         this.game.global.currentTaskIndex = 0;
         this.game.load.text('rootContext', __WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].rootConf);
         this.state.add('MainMenu', __WEBPACK_IMPORTED_MODULE_2__MainMenu__["a" /* default */], false);
-        this.game.load.image('logo', 'assets/images/logoL.png');
+        this.game.load.image('logo', 'assets/images/logo.png');
     }
 
     create() {
         console.log('Root Boot Create.');
         this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
         this.logo.anchor.setTo(0.5, 0.5);
-        this.logo.scale.setTo(0.7, 0.7);
+        this.logo.scale.setTo(0.6, 0.6);
         this.logo.alpha = 0.2;
         this.logoTween = this.game.add.tween(this.logo).to({ alpha: 1 }, 2000, __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Easing.Linear.None, true, 0, 1, true);
     }
@@ -12468,4 +12471,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[326]);
-//# sourceMappingURL=bundle-67320b.js.map
+//# sourceMappingURL=bundle-d8cc8e.js.map
