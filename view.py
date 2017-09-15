@@ -124,6 +124,11 @@ def load_user(id):
 def game():
     return render_template('/index.html')
 
+@app.after_request
+def add_header(response):
+    response.cache_control.no_store = True
+    return response
+
 
 # Add model to flask-admin
 admin.add_view(AdminModelView(models.User))

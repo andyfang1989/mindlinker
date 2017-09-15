@@ -5200,11 +5200,24 @@ function play(animationContext) {
         this.game.global.currentTaskIndex = 0;
         this.game.load.text('rootContext', __WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].rootConf);
         this.state.add('MainMenu', __WEBPACK_IMPORTED_MODULE_2__MainMenu__["a" /* default */], false);
+        this.game.load.image('logo', 'assets/images/logo.png');
+    }
+
+    create() {
+        console.log('Root Boot Create.');
+        this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo');
+        this.logo.anchor.setTo(0.5, 0.5);
+        this.logo.scale.setTo(10, 10);
+        this.logo.alpha = 0.2;
+        this.logoTween = this.game.add.tween(this.logo).to({ alpha: 1 }, 1500, __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Easing.Linear.None, true, 0, 2, true);
     }
 
     render() {
         console.log('Root Boot Render.');
-        this.state.start('MainMenu');
+        if (!this.logoTween.isRunning) {
+            this.logo.destroy();
+            this.state.start('MainMenu');
+        }
     }
 });
 
@@ -12455,4 +12468,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[326]);
-//# sourceMappingURL=bundle-e8e3b0.js.map
+//# sourceMappingURL=bundle-c883be.js.map

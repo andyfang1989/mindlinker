@@ -16,10 +16,23 @@ export default class extends Phaser.State {
         this.game.global.currentTaskIndex = 0
         this.game.load.text('rootContext', config.rootConf)
         this.state.add('MainMenu', MainMenuState, false)
+        this.game.load.image('logo', 'assets/images/logo.png')
+    }
+
+    create() {
+        console.log('Root Boot Create.')
+        this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo')
+        this.logo.anchor.setTo(0.5, 0.5)
+        this.logo.scale.setTo(10,10)
+        this.logo.alpha = 0.2
+        this.logoTween = this.game.add.tween(this.logo).to( { alpha: 1 }, 1500, Phaser.Easing.Linear.None, true, 0, 2, true)
     }
 
     render() {
         console.log('Root Boot Render.')
-        this.state.start('MainMenu')
+        if (!this.logoTween.isRunning) {
+            this.logo.destroy()
+            this.state.start('MainMenu')
+        }
     }
 }
