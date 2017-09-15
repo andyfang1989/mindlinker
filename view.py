@@ -34,8 +34,8 @@ def main():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST' and 'email' in request.form:
-        if not recaptchaCheck(request.form['g-recaptcha-response']):
-            return '请点击人机身份验证!'
+        #if not recaptchaCheck(request.form['g-recaptcha-response']):
+            #return '请点击人机身份验证!'
         email = request.form['email']
         user_obj = User()
         user = user_obj.get_by_email_w_password(email)
@@ -69,8 +69,8 @@ def register():
         current_app.logger.info(register_form.errors)
         return '注册失败！'
     elif request.method == 'POST' and register_form.validate():
-        if not recaptchaCheck(request.form['g-recaptcha-response']):
-            return '请点击人机身份验证!'
+        #if not recaptchaCheck(request.form['g-recaptcha-response']):
+            #return '请点击人机身份验证!'
         email = request.form['email']
         password_hash = flask_bcrypt.generate_password_hash(
             request.form['password'],
