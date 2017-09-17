@@ -342,12 +342,12 @@ export default class extends Phaser.State {
 
     showInformationBoard() {
         if (!this.infoBoard) {
-            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2),'info')
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100,'info')
             this.infoBoard.anchor.setTo(0.5, 0.5)
             this.infoBoard.scale.setTo(0.7,0.7)
-            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
             this.info.anchor.setTo(0.5, 0.5)
-            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-185, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
             this.closeButton.anchor.setTo(0.5, 0.5)
             this.closeButton.scale.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.closeButton, '返回', 'bottom')

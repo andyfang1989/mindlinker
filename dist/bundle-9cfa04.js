@@ -5212,7 +5212,7 @@ function play(animationContext) {
         this.logo.anchor.setTo(0.5, 0.5);
         this.logo.scale.setTo(0.6, 0.6);
         this.logo.alpha = 0.2;
-        this.logoTween = this.game.add.tween(this.logo).to({ alpha: 1 }, 2000, __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Easing.Linear.None, true, 0, 1, true);
+        this.logoTween = this.game.add.tween(this.logo).to({ alpha: 1 }, 2000, __WEBPACK_IMPORTED_MODULE_0_phaser___default.a.Easing.Linear.None, true, 0, 0, true);
     }
 
     render() {
@@ -5586,12 +5586,12 @@ function play(animationContext) {
 
     showInformationBoard() {
         if (!this.infoBoard) {
-            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2), 'info');
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2) - 100, 'info');
             this.infoBoard.anchor.setTo(0.5, 0.5);
             this.infoBoard.scale.setTo(0.7, 0.7);
-            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, { font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left' });
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2) - 100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, { font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left' });
             this.info.anchor.setTo(0.5, 0.5);
-            this.closeButton = this.game.add.button(Math.round(this.game.width / 2) + 270, Math.round(this.game.height / 2) - 185, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled');
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2) + 270, Math.round(this.game.height / 2) - 285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled');
             this.closeButton.anchor.setTo(0.5, 0.5);
             this.closeButton.scale.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__util_TooltipBuilder__["a" /* default */])(this.game, this.closeButton, '返回', 'bottom');
@@ -6111,12 +6111,12 @@ function play(animationContext) {
 
     showInformationBoard() {
         if (!this.infoBoard) {
-            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2), 'info');
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2) - 100, 'info');
             this.infoBoard.anchor.setTo(0.5, 0.5);
             this.infoBoard.scale.setTo(0.7, 0.7);
-            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, { font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left' });
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2) - 100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, { font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left' });
             this.info.anchor.setTo(0.5, 0.5);
-            this.closeButton = this.game.add.button(Math.round(this.game.width / 2) + 270, Math.round(this.game.height / 2) - 185, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled');
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2) + 270, Math.round(this.game.height / 2) - 285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled');
             this.closeButton.anchor.setTo(0.5, 0.5);
             this.closeButton.scale.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.closeButton, '返回', 'bottom');
@@ -12471,4 +12471,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[326]);
-//# sourceMappingURL=bundle-d8cc8e.js.map
+//# sourceMappingURL=bundle-9cfa04.js.map

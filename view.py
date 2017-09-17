@@ -4,6 +4,7 @@ from flask import flash
 from flask import render_template
 from flask import request
 from flask import redirect
+from flask import url_for
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
@@ -50,7 +51,8 @@ def login():
             remember = request.form.get('remember', 'no') == 'yes'
             if login_user(user, remember=remember):
                 flash('登录成功!')
-                return redirect('/game')
+                #TODO: pass the correct userid from db
+                return redirect(url_for('getUserGameStatuses', userid = 1))
             else:
                 flash('登录失败!')
     return render_template('/auth/login.html')
@@ -121,7 +123,7 @@ def load_user(id):
 
 
 # Route for game
-@app.route('/game')
+@app.route('/game', methods=['GET'])
 @login_required
 def game():
     return render_template('/index.html')
@@ -131,6 +133,49 @@ def add_header(response):
     response.cache_control.no_store = True
     return response
 
+# Gets user game statuses for all the games own by the user
+@app.route('/userGameStatuses', methods=['GET'])
+@login_required
+def getUserGameStatuses():
+    if request.method == 'GET' and 'userid' in request.args:
+        #TODO: gets the real data from db
+        profile = {}
+        profile['teacher'] = True
+        games = []
+        games.append({})
+        games.append({})
+        games[0]['name'] = '骑士的故事'
+        games[0]['tasks'] = [{'name': '第一关', 'status': False}, {'name': '第二关', 'status': False}, {'name': '第三关', 'status': False}, {'name': '第四关', 'status': False}, {'name': '第五关', 'status': False}, {'name': '第六关', 'status': False}, {'name': '第七关', 'status': False}, {'name': '第八关', 'status': False}, {'name': '第九关', 'status': False}, {'name': '第十关', 'status': False}]
+        games[1]['name'] = '公主的故事'
+        games[1]['tasks'] = [{'name': '第一关', 'status': False}, {'name': '第二关', 'status': False}, {'name': '第三关', 'status': False}, {'name': '第四关', 'status': False}, {'name': '第五关', 'status': False}, {'name': '第六关', 'status': False}, {'name': '第七关', 'status': False}, {'name': '第八关', 'status': False}, {'name': '第九关', 'status': False}, {'name': '第十关', 'status': False}]
+        profile['games'] = games
+        return render_template('/auth/gamestatuses.html', Profile = profile)
+    return render_template('/auth/internalerror.html', msg='User Id Missing in Request Arguments.')
 
+# Gets student game statuses for a teacher
+@app.route('/studentGameStatuses', methods=['GET'])
+@login_required
+def getStudentGameStatuses():
+    if request.method == 'GET' and 'teacherUserId' in request.args:
+        #TODO: gets the real data from db
+        students = []
+        students.append({})
+        students.append({})
+        students.append({})
+        students[0]['name']='小方'
+        students[1]['name']='小叶'
+        students[2]['name']='小黄'
+        games = []
+        games.append({})
+        games.append({})
+        games[0]['name'] = '骑士的故事'
+        games[0]['tasks'] = [{'name': '第一关', 'status': False}, {'name': '第二关', 'status': False}, {'name': '第三关', 'status': False}, {'name': '第四关', 'status': False}, {'name': '第五关', 'status': False}, {'name': '第六关', 'status': False}, {'name': '第七关', 'status': False}, {'name': '第八关', 'status': False}, {'name': '第九关', 'status': False}, {'name': '第十关', 'status': False}]
+        games[1]['name'] = '公主的故事'
+        games[1]['tasks'] = [{'name': '第一关', 'status': False}, {'name': '第二关', 'status': False}, {'name': '第三关', 'status': False}, {'name': '第四关', 'status': False}, {'name': '第五关', 'status': False}, {'name': '第六关', 'status': False}, {'name': '第七关', 'status': False}, {'name': '第八关', 'status': False}, {'name': '第九关', 'status': False}, {'name': '第十关', 'status': False}]
+        students[0]['games'] = games
+        students[1]['games'] = games
+        students[2]['games'] = games
+        return render_template('/auth/student_game_statuses.html', Students = students)
+    return render_template('/auth/internalerror.html', msg='Teacher User Id Missing in Request Arguments.')
 # Add model to flask-admin
 admin.add_view(AdminModelView(models.User))

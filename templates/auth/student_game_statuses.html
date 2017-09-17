@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<br>
+<form action="{{ url_for('getUserGameStatuses') }}" method="get">
+    <input type="hidden" value="1" name="userid"/>
+    <div align="left">
+        <button type="submit" class="btn btn-primary">返回</button>
+    </div>
+</form>
+<br>
+<h1 align="center">学生任务进度</h1>
+<br>
+{% for student in Students %}
+<h3 align="center"> {{ student.name.decode('utf-8') }}<h3>
+<br>
+<div class="table-responsive">
+  <table class="table">
+        <tr>
+        	<th>游戏名称</th>
+        	<th>第一关</th> 
+        	<th>第二关</th>
+        	<th>第三关</th> 
+        	<th>第四关</th>
+        	<th>第五关</th> 
+        	<th>第六关</th>
+        	<th>第七关</th> 
+        	<th>第八关</th>
+        	<th>第九关</th> 
+        	<th>第十关</th>       
+        </tr>
+    {% for game in student.games %}
+        <tr>
+            <td> {{ game.name.decode('utf-8') }}</td>
+            {% for task in game.tasks %}
+            <td> 
+                {% if task.status %}
+                    <p>完成</p>
+                {% else %}
+                    <p>未完成</p>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+  </table>
+</div>
+<br>
+{% endfor %}
+
+{% endblock %}
