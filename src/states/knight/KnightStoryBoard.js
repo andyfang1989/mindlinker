@@ -54,8 +54,8 @@ export default class extends Phaser.State {
         this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
         TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
         let tasks = this.gameContext.task_configs.tasks
-        let padding = this.game.width - Math.round((this.game.width - 750) / 2)
-        let x = padding - 75
+        let padding = this.game.width - 200
+        let x = padding
         let y = Math.round(this.game.height * 0.5)
         if (this.endIndex === 9 && this.nextButton !== undefined) {
             this.nextButton.destroy()
@@ -65,13 +65,13 @@ export default class extends Phaser.State {
             setScaleAndAnchorForObject(this.nextButton, -1, 1, 0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '下一页', 'bottom')
         }
-        x -= 170
+        x -= 250
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i]
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: this.endIndex - i}, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey)
-            setScaleAndAnchorForObject(taskButton, 1.5, 1.5, 0.5, 0.5)
+            setScaleAndAnchorForObject(taskButton, 2, 2, 0.5, 0.5)
             TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
-            x -= 200
+            x -= 250
         }
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy()

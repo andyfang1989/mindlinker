@@ -41,6 +41,10 @@ export default class extends Phaser.State {
         this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
     }
 
+    drawForeGround() {
+        this.game.add.sprite(0, 0, 'foreground').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+    }
+
     drawBoardButtons() {
         this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
         this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
@@ -207,6 +211,7 @@ export default class extends Phaser.State {
     renderState() {
         this.calculateCharacterStartingPositionResponsively()
         this.drawBackground()
+        this.drawForeGround()
         this.drawPath()
         this.drawBoardButtons()
         this.drawMainCharacterAtStartingPosition()

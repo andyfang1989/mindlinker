@@ -459,7 +459,7 @@
          ]
       }
    ],
-   "background_image":"assets/images/knight/background/background.jpg",
+   "background_image":"assets/images/knight/background/background.png",
    "foreground_image":"assets/images/knight/background/foreground.png",
    "shadow_image":"assets/images/knight/background/shadow.png",
    "grid_image":"assets/images/knight/background/grid.png",
