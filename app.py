@@ -7,6 +7,7 @@ from flask_mongoengine import MongoEngine
 from flask_mongoengine import MongoEngineSessionInterface
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_compress import Compress
 
 
 # Create the main app
@@ -29,3 +30,5 @@ login_manager.init_app(app)
 # Connect to admin
 admin = Admin(name='mindmaster', template_mode='bootstrap3')
 admin.init_app(app)
+compress = Compress()
+compress.init_app(app)
