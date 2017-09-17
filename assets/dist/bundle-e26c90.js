@@ -5091,7 +5091,7 @@ function play(animationContext) {
     }
 
     renderMenu() {
-        let logo = this.game.add.sprite(this.game.world.centerX - 400, this.game.world.centerY - 100, 'logo');
+        let logo = this.game.add.sprite(200, 200, 'logo');
         logo.anchor.setTo(0.5, 0.5);
         logo.scale.setTo(0.3, 0.3);
         let stories = this.rootContext.stories;
@@ -12471,4 +12471,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[326]);
-//# sourceMappingURL=bundle-9cfa04.js.map
+//# sourceMappingURL=bundle-e26c90.js.map

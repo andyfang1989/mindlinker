@@ -36,7 +36,7 @@ export default class extends Phaser.State {
     }
 
     renderMenu() {
-        let logo = this.game.add.sprite(this.game.world.centerX-400, this.game.world.centerY-100, 'logo')
+        let logo = this.game.add.sprite(200, 200, 'logo')
         logo.anchor.setTo(0.5, 0.5)
         logo.scale.setTo(0.3,0.3)
         let stories = this.rootContext.stories
