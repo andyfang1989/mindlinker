@@ -3,5 +3,7 @@ export default {
     backgroundHeight: 700,
     animationDuration: 500,
     rootConf: 'assets/conf/root_config.json',
-    localStorageName: 'phaseres6webpack'
+    localStorageName: 'phaseres6webpack',
+    url: 'mindlinker.herokuapp.com',
+    updateTaskStatus: 'updateTaskStatusByUserIdByGameIdByTaskId'
 }

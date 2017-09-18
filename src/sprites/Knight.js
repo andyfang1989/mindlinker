@@ -4,6 +4,7 @@
 import Phaser from 'phaser'
 import TooltipBuilder from '../util/TooltipBuilder'
 import config from '../config'
+import {sendHttpRequest, printHttpResponse} from '../UIUtil'
 
 export default class extends Phaser.Sprite {
     constructor({game, name, x, y, asset, frame}) {
@@ -13,13 +14,21 @@ export default class extends Phaser.Sprite {
         this.actionQueue = []
         this.playingAnimation = null
         this.taskCompleted = false
+        this.allset = false
     }
 
     update() {
         if (this.actionQueue.length > 0 && (this.playingAnimation === null || this.playingAnimation.isFinished)) {
             this.playNextAction()
-        } else if (this.actionQueue.length === 0 && this.playingAnimation !== null && this.playingAnimation.isFinished) {
+        } else if (this.actionQueue.length === 0 && this.playingAnimation !== null && this.playingAnimation.isFinished && !this.allset) {
+            if (this.taskCompleted) {
+                let url = config.updateTaskStatus
+                let operation = 'POST'
+                let params = JSON.stringify({userid: 1, gameid: 0, taskid: this.game.global.currentTaskIndex, status: true})
+                sendHttpRequest(printHttpResponse, operation, url, params)
+            }
             this.showButtons()
+            this.allset = true
         }
     }
 

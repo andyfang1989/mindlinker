@@ -177,5 +177,18 @@ def getStudentGameStatuses():
         students[2]['games'] = games
         return render_template('/auth/student_game_statuses.html', Students = students)
     return render_template('/auth/internalerror.html', msg='Teacher User Id Missing in Request Arguments.')
+
+# Update task status for user for game
+@app.route('/updateTaskStatusByUserIdByGameIdByTaskId', methods=['POST'])
+@login_required
+def updateTaskStatusByUserIdByGameIdByTaskId():
+    if request.method == 'POST':
+        content = request.json
+        print(content)
+        if 'userid' in content and 'gameid' in content and 'taskid' in content and 'status' in content:
+            #TODO: update the db
+            return 'Task update succeed.'
+    return render_template('/auth/internalerror.html', msg='Invalid request arguments.')
+
 # Add model to flask-admin
 admin.add_view(AdminModelView(models.User))

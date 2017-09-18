@@ -80,3 +80,18 @@ export function setReadableCode (code) {
     }
     document.getElementById('instructions').innerHTML = readableCode
 }
+
+export function sendHttpRequest(callback, operation, url, params) {
+    console.log('Send http request to ' + url + ' with operation ' + operation + ' and params: ' + params)
+    let http = new XMLHttpRequest();
+    http.open(operation, url, true);
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.onreadystatechange = callback
+    http.send(params);
+}
+
+export function printHttpResponse() {
+    if(this.readyState == 4 && this.status == 200) {
+        alert(this.responseText);
+    }
+}
