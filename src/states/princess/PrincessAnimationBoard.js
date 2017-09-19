@@ -205,7 +205,10 @@ export default class extends Phaser.State {
     }
 
     drawTitle() {
-        this.game.add.text(Math.round(this.game.width / 2) - 50, 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#FFC300', align: 'center'})
+        let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard')
+        titleboard.anchor.setTo(0.5, 0)
+        let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
+        title.anchor.setTo(0.5, 0)
     }
 
     renderState() {

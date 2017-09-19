@@ -5658,7 +5658,10 @@ function play(animationContext) {
     }
 
     drawTitle() {
-        this.game.add.text(Math.round(this.game.width / 2) - 50, 10, this.taskContext.title, { font: 'bold 30px Arial', fill: '#FFC300', align: 'center' });
+        let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard');
+        titleboard.anchor.setTo(0.5, 0);
+        let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, { font: 'bold 30px Arial', fill: '#3399FF', align: 'center' });
+        title.anchor.setTo(0.5, 0);
     }
 
     renderState() {
@@ -5759,6 +5762,7 @@ function play(animationContext) {
         this.game.load.image('grid', this.gameContext.grid_image);
         this.game.load.image('shadow', this.gameContext.shadow_image);
         this.game.load.image('info', this.gameContext.info_image);
+        this.game.load.image('titleboard', this.gameContext.title_image);
     }
 
     loadStoryAudios() {
@@ -6125,7 +6129,10 @@ function play(animationContext) {
     }
 
     drawTitle() {
-        this.game.add.text(Math.round(this.game.width / 2) - 50, 10, this.taskContext.title, { font: 'bold 30px Arial', fill: '#FFC300', align: 'center' });
+        let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard');
+        titleboard.anchor.setTo(0.5, 0);
+        let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, { font: 'bold 30px Arial', fill: '#3399FF', align: 'center' });
+        title.anchor.setTo(0.5, 0);
     }
 
     renderState() {
@@ -6255,6 +6262,7 @@ function play(animationContext) {
         this.game.load.image('background', this.gameContext.background_image);
         this.game.load.image('foreground', this.gameContext.foreground_image);
         this.game.load.image('info', this.gameContext.info_image);
+        this.game.load.image('titleboard', this.gameContext.title_image);
     }
 
     loadStoryAudios() {
@@ -12516,4 +12524,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[326]);
-//# sourceMappingURL=bundle-eee479.js.map
+//# sourceMappingURL=bundle-822a35.js.map

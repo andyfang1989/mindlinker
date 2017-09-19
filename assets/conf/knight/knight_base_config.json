@@ -464,6 +464,7 @@
    "shadow_image":"assets/images/knight/background/shadow.png",
    "grid_image":"assets/images/knight/background/grid.png",
    "info_image":"assets/images/knight/background/info.png",
+   "title_image":"assets/images/title.png",
    "audios":[  
       {  
          "key":"walk",

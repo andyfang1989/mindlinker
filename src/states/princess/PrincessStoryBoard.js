@@ -23,6 +23,7 @@ export default class extends Phaser.State {
         this.game.load.image('background', this.gameContext.background_image)
         this.game.load.image('foreground', this.gameContext.foreground_image)
         this.game.load.image('info', this.gameContext.info_image)
+        this.game.load.image('titleboard', this.gameContext.title_image)
     }
 
     loadStoryAudios() {
