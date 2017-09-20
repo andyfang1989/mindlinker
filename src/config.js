@@ -5,5 +5,6 @@ export default {
     rootConf: 'assets/conf/root_config.json',
     localStorageName: 'phaseres6webpack',
     url: 'mindlinker.herokuapp.com',
-    updateTaskStatus: 'updateTaskStatusByUserIdByGameIdByTaskId'
+    updateTaskStatus: 'updateTaskStatusByUserIdByGameIdByTaskId',
+    debug: true
 }

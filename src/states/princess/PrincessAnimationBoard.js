@@ -7,17 +7,18 @@ import Princess from '../../sprites/Princess'
 import PrincessAnimationPlayer from '../../animation/PrincessAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
 import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode} from '../../UIUtil'
+import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
-        console.log('Game width: ' + this.game.width + ' height: ' + this.game.height)
+        logDebugInfo('Game width: ' + this.game.width + ' height: ' + this.game.height)
         this.characterStartX = Math.round(this.game.width / 2)
         this.characterStartY = Math.round(this.game.height / 2)
     }
 
     getCurrentAnimationContext() {
         let instruction = getInstruction(this.game.workspace)
-        console.log('Blockly Instruction: ' + instruction)
+        logDebugInfo('Blockly Instruction: ' + instruction)
         setReadableCode(instruction)
         return {
             sprite: this.princess,
@@ -29,7 +30,7 @@ export default class extends Phaser.State {
     }
 
     play() {
-        console.log('play blocks')
+        logDebugInfo('play blocks')
         this.game.sound.play('press')
         let animationContext = this.getCurrentAnimationContext(this.gameContext)
         this.princess.start = true
@@ -57,22 +58,7 @@ export default class extends Phaser.State {
     drawMainCharacterAtStartingPosition() {
         let startX = this.characterStartX + this.taskContext.character_x_offset
         let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3) + this.taskContext.character_y_offset
-        let frames = [
-            "animation/walk-0/walk-0-0000",
-            "animation/walk-1/walk-1-0000",
-            "animation/walk-2/walk-2-0000",
-            "animation/walk-3/walk-3-0000",
-            "animation/walk-4/walk-4-0000",
-            "animation/walk-5/walk-5-0000",
-            "animation/walk-6/walk-6-0000",
-            "animation/walk-7/walk-7-0000",
-            "animation/walk-8/walk-8-0000",
-            "animation/walk-9/walk-9-0000",
-            "animation/walk-10/walk-10-0000",
-            "animation/walk-11/walk-11-0000"
-        ]
-        console.log('Draw main character at location: x = ' + startX + ' and y = ' + startY)
-        console.log('The starting sprite image is ' + frames[this.taskContext.character_starting_clock_position])
+        logDebugInfo('Draw main character at location: x = ' + startX + ' and y = ' + startY)
         let sprite = new Princess({
             game: this.game,
             name: 'princess',
@@ -84,6 +70,10 @@ export default class extends Phaser.State {
             frame: 0
         })
         this.princess = this.game.add.existing(sprite)
+        this.initPrincessPosition()
+    }
+
+    initPrincessPosition() {
         this.princess.actionQueue.push({
             name: 'TurnRight0_' + this.taskContext.character_starting_clock_position,
             xOffset: 0,
@@ -93,8 +83,7 @@ export default class extends Phaser.State {
     }
 
     drawPath() {
-        console.log('Draw task path.')
-        console.log('Path center: x = ' + Math.round(this.game.width/2) + ' y = ' + Math.round(this.game.height/2))
+        logDebugInfo('Draw task path.')
         let path = this.game.add.sprite(Math.round(this.game.width/2), Math.round(this.game.height/2), 'taskPath')
         path.anchor.setTo(0.5, 0.5)
     }
@@ -108,7 +97,7 @@ export default class extends Phaser.State {
     }
 
     loadPath() {
-        console.log('Load path image: ' + this.taskContext.pathImage)
+        logDebugInfo('Load path image: ' + this.taskContext.pathImage)
         this.game.load.image('taskPath', this.taskContext.pathImage)
     }
 
@@ -118,7 +107,7 @@ export default class extends Phaser.State {
             sprite.loadTexture(spritesheet.key)
             for (let j = 0; j < spritesheet.animations.length; j++) {
                 let animation = spritesheet.animations[j]
-                console.log('Add animation: ' + animation.name + ' for sprite: ' + sprite.name)
+                logDebugInfo('Add animation: ' + animation.name + ' for sprite: ' + sprite.name)
                 sprite.animations.add(animation.name, animation.frames, animation.rate, animation.loop, false)
             }
         }
@@ -169,26 +158,26 @@ export default class extends Phaser.State {
     }
 
     init() {
-        console.log('PrincessAnimationBoard Init.')
+        logDebugInfo('PrincessAnimationBoard Init.')
         if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
             this.created = false
         }
     }
 
     preload() {
-        console.log('PrincessAnimationBoard Preload.')
+        logDebugInfo('PrincessAnimationBoard Preload.')
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
     }
 
     loadAssets() {
-        console.log('Load assets.')
+        logDebugInfo('Load assets.')
         this.loadPath()
         this.game.load.start()
     }
 
     create() {
-        console.log('PrincessAnimationBoard Create.')
+        logDebugInfo('PrincessAnimationBoard Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
             this.game.load.onLoadStart.addOnce(loadStart, this);
@@ -207,6 +196,7 @@ export default class extends Phaser.State {
     drawTitle() {
         let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard')
         titleboard.anchor.setTo(0.5, 0)
+        titleboard.alpha = 0.8
         let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
         title.anchor.setTo(0.5, 0)
     }
@@ -241,6 +231,7 @@ export default class extends Phaser.State {
             this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100,'info')
             this.infoBoard.anchor.setTo(0.5, 0.5)
             this.infoBoard.scale.setTo(0.7,0.7)
+            this.infoBoard.alpha = 0.8
             this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
             this.info.anchor.setTo(0.5, 0.5)
             this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')

@@ -4,14 +4,15 @@
 import Phaser from 'phaser'
 import config from '../config'
 import MainMenuState from './MainMenu'
+import {logDebugInfo} from '../Logger'
 
 export default class extends Phaser.State {
     init() {
-        console.log('Root Boot Init.')
+        logDebugInfo('Root Boot Init.')
     }
 
     preload() {
-        console.log('Root Boot Preload.')
+        logDebugInfo('Root Boot Preload.')
         this.game.global = {}
         this.game.global.currentTaskIndex = 0
         this.game.load.text('rootContext', config.rootConf)
@@ -20,7 +21,7 @@ export default class extends Phaser.State {
     }
 
     create() {
-        console.log('Root Boot Create.')
+        logDebugInfo('Root Boot Create.')
         this.logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'logo')
         this.logo.anchor.setTo(0.5, 0.5)
         this.logo.scale.setTo(0.6,0.6)
@@ -29,7 +30,7 @@ export default class extends Phaser.State {
     }
 
     render() {
-        console.log('Root Boot Render.')
+        logDebugInfo('Root Boot Render.')
         if (!this.logoTween.isRunning) {
             this.logo.destroy()
             this.state.start('MainMenu')

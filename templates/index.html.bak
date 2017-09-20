@@ -8,6 +8,6 @@
     <div id="block" style="position: absolute;top: 0px;height: 400px;right: 0px;left: 0px;bottom: 0px;opacity: 0.8"></div>
 {% endblock %}
 {% block scripts %}
-<script src="assets/dist/vendor.bundle-3d27fb.js"></script>
-<script src="assets/dist/bundle-3d27fb.js"></script>
+<script src="assets/dist/vendor.bundle-b56c34.js"></script>
+<script src="assets/dist/bundle-b56c34.js"></script>
 {% endblock %}

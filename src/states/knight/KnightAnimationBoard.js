@@ -8,10 +8,11 @@ import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
 import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode} from '../../UIUtil'
+import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
-        console.log('Game width: ' + this.game.width + ' height: ' + this.game.height)
+        logDebugInfo('Game width: ' + this.game.width + ' height: ' + this.game.height)
         this.step_width_in_pixel = Math.round(this.game.width * this.gameContext.step_x_percentage)
         this.step_height_in_pixel = Math.round(this.game.height * this.gameContext.step_y_percentage)
 
@@ -21,7 +22,7 @@ export default class extends Phaser.State {
 
     getCurrentAnimationContext() {
         let instruction = getInstruction(this.game.workspace)
-        console.log('Blockly Instruction: ' + instruction)
+        logDebugInfo('Blockly Instruction: ' + instruction)
         setReadableCode(instruction)
         return {
             sprite: this.knight,
@@ -43,7 +44,7 @@ export default class extends Phaser.State {
     }
 
     play() {
-        console.log('play blocks')
+        logDebugInfo('play blocks')
         this.game.sound.play('press')
         let animationContext = this.getCurrentAnimationContext(this.gameContext)
         KnightAnimationPlayer(animationContext)
@@ -67,10 +68,10 @@ export default class extends Phaser.State {
         const cHeight = this.gameContext.character_height_in_pixel
         const characterStartGridX = this.taskContext.character_starting_grid_x
         const characterStartGridY = this.taskContext.character_starting_grid_y
-        console.log('Calculating character starting position: grid starting x: ' + this.gridStartX + ' grid starting y: ' + this.gridStartY)
+        logDebugInfo('Calculating character starting position: grid starting x: ' + this.gridStartX + ' grid starting y: ' + this.gridStartY)
         const targetGridXMid = this.gridStartX + Math.round((characterStartGridX + 0.5) * this.step_width_in_pixel)
         const targetGridYMid = this.gridStartY + Math.round((characterStartGridY + 0.5) * this.step_height_in_pixel) - Math.round(cHeight / 2)
-        console.log('Draw main character at location: x = ' + targetGridXMid + ' and y = ' + targetGridYMid)
+        logDebugInfo('Draw main character at location: x = ' + targetGridXMid + ' and y = ' + targetGridYMid)
         let sprite = new Knight({
             game: this.game,
             name: 'knight',
@@ -115,10 +116,10 @@ export default class extends Phaser.State {
         let dGridY = this.taskContext.passCondition.destinationYGrid
         let gridWidth = this.step_width_in_pixel
         let gridHeight = this.step_height_in_pixel
-        console.log('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
+        logDebugInfo('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
         if (items.length > 0) {
             let checkValid = function (coordinates, xGridSize, yGridSize, dGridX, dGridY) {
-                console.log('Check valid for map with Size : (' + xGridSize + ' , ' + yGridSize + ') and dX = ' + dGridX + ' dY = ' + dGridY)
+                logDebugInfo('Check valid for map with Size : (' + xGridSize + ' , ' + yGridSize + ') and dX = ' + dGridX + ' dY = ' + dGridY)
                 let xq = []
                 let yq = []
                 let xOffset = [1, -1, 0, 0]
@@ -131,7 +132,7 @@ export default class extends Phaser.State {
                     let curX = xq.shift()
                     let curY = yq.shift()
                     if (curX === dGridX && curY === dGridY) {
-                        console.log('Map is valid: ' + ' x = ' + curX + ' y = ' + curY + ' dX = ' + dGridX + ' dY = ' + dGridY)
+                        logDebugInfo('Map is valid: ' + ' x = ' + curX + ' y = ' + curY + ' dX = ' + dGridX + ' dY = ' + dGridY)
                         return true
                     } else {
                         for (let k = 0; k < 4; k++) {
@@ -157,7 +158,7 @@ export default class extends Phaser.State {
                     let ySize = this.gameContext.grid_y_size
                     let sGridX = this.taskContext.character_starting_grid_x
                     let sGridY = this.taskContext.character_starting_grid_y
-                    console.log('grid x size = ' + xSize + ' grid y size = ' + ySize + ' destination x = ' + dGridX + ' destination y = ' + dGridY)
+                    logDebugInfo('grid x size = ' + xSize + ' grid y size = ' + ySize + ' destination x = ' + dGridX + ' destination y = ' + dGridY)
                     while (!solvable) {
                         item.coordinates = []
                         let currentCount = 0
@@ -184,9 +185,9 @@ export default class extends Phaser.State {
                     let position = item.coordinates[j]
                     let ix = this.gridStartX + Math.round((position.x + position.xOffset) * gridWidth)
                     let iy = this.gridStartY + Math.round((position.y + 1 + position.yOffset - item.gridHeight) * gridHeight)
-                    console.log('Draw item ' + i + ' at gx = ' + position.x + ' gy = ' + position.y + ' x = ' + ix + ' y = ' + iy)
+                    logDebugInfo('Draw item ' + i + ' at gx = ' + position.x + ' gy = ' + position.y + ' x = ' + ix + ' y = ' + iy)
                     let itemImage = this.game.add.sprite(ix, iy, item.key)
-                    console.log('Scale item to x = ' + gridWidth * item.gridWidth / item.width + ' y = ' + gridHeight * item.gridHeight / item.height)
+                    logDebugInfo('Scale item to x = ' + gridWidth * item.gridWidth / item.width + ' y = ' + gridHeight * item.gridHeight / item.height)
                     itemImage.scale.setTo(gridWidth * item.gridWidth / item.width, gridHeight * item.gridHeight / item.height)
                 }
             }
@@ -196,7 +197,7 @@ export default class extends Phaser.State {
     drawForeGround() {
         let fWidth = this.game.width
         let fHeight = this.game.height
-        console.log('Draw front ground image with size width = ' + fWidth + ' height = ' + fHeight)
+        logDebugInfo('Draw front ground image with size width = ' + fWidth + ' height = ' + fHeight)
         this.game.add.sprite(0, 0, 'foreground').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
     }
 
@@ -205,16 +206,16 @@ export default class extends Phaser.State {
         let gridHeight = this.step_height_in_pixel
         let gridImageWidth = this.gameContext.grid_image_width
         let gridImageHeight = this.gameContext.grid_image_height
-        console.log('Grid image width: ' + gridImageWidth + ' grid image height: ' + gridImageHeight)
+        logDebugInfo('Grid image width: ' + gridImageWidth + ' grid image height: ' + gridImageHeight)
         let gridXSize = this.gameContext.grid_x_size
         let gridYSize = this.gameContext.grid_y_size
-        console.log('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
-        console.log('Draw grid images.')
+        logDebugInfo('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
+        logDebugInfo('Draw grid images.')
         for (let r = 0; r < gridYSize; r++) {
             for (let c = r % 2; c < gridXSize; c += 2) {
                 let ix = Math.round(this.gridStartX + c * gridWidth)
                 let iy = Math.round(this.gridStartY + r * gridHeight)
-                console.log('Draw grid images at r = ' + r + ' c = ' + c + ' x = ' + ix + ' y = ' + iy)
+                logDebugInfo('Draw grid images at r = ' + r + ' c = ' + c + ' x = ' + ix + ' y = ' + iy)
                 let gridImage = this.game.add.sprite(ix, iy, 'grid')
                 gridImage.scale.setTo(gridWidth / gridImageWidth, gridHeight / gridImageHeight)
             }
@@ -230,7 +231,7 @@ export default class extends Phaser.State {
             let item = this.taskContext.interactionItems[i]
             for (let j = 0; j < item.spritesheets.length; j++) {
                 let spriteSheet = item.spritesheets[j]
-                console.log('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
+                logDebugInfo('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
                 this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
             }
         }
@@ -250,7 +251,7 @@ export default class extends Phaser.State {
             sprite.loadTexture(spritesheet.key)
             for (let j = 0; j < spritesheet.animations.length; j++) {
                 let animation = spritesheet.animations[j]
-                console.log('Add animation: ' + animation.name + ' for sprite: ' + sprite.name)
+                logDebugInfo('Add animation: ' + animation.name + ' for sprite: ' + sprite.name)
                 sprite.animations.add(animation.name, animation.frames, animation.rate, animation.loop, false)
             }
         }
@@ -270,7 +271,7 @@ export default class extends Phaser.State {
         let grid_bottom_left_y = Math.round(this.gridStartY + grid_height)
         repositionBlock(grid_bottom_left_x, grid_bottom_left_y, this.game.height)
         repositionText(this.gridStartY, grid_height, grid_bottom_left_x)
-        console.log('Block div x: ' + grid_bottom_left_x + ' yt: ' + grid_bottom_left_y + ' h: ' + this.game.height)
+        logDebugInfo('Block div x: ' + grid_bottom_left_x + ' yt: ' + grid_bottom_left_y + ' h: ' + this.game.height)
         let options = {
             comments: false,
             disable: false,
@@ -310,14 +311,14 @@ export default class extends Phaser.State {
     }
 
     init() {
-        console.log('KnightAnimationBoard Init.')
+        logDebugInfo('KnightAnimationBoard Init.')
         if (this.game.global.preTaskIndex !== this.game.global.currentTaskIndex) {
             this.created = false
         }
     }
 
     preload() {
-        console.log('KnightAnimationBoard Preload.')
+        logDebugInfo('KnightAnimationBoard Preload.')
         this.setCurrentGameContexts()
         this.setCurrentTaskContext()
     }
@@ -328,7 +329,7 @@ export default class extends Phaser.State {
     }
 
     create() {
-        console.log('KnightAnimationBoard Create.')
+        logDebugInfo('KnightAnimationBoard Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
             this.game.load.onLoadStart.addOnce(loadStart, this);
@@ -345,6 +346,7 @@ export default class extends Phaser.State {
             this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100,'info')
             this.infoBoard.anchor.setTo(0.5, 0.5)
             this.infoBoard.scale.setTo(0.7,0.7)
+            this.infoBoard.alpha = 0.8
             this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
             this.info.anchor.setTo(0.5, 0.5)
             this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
@@ -377,6 +379,7 @@ export default class extends Phaser.State {
     drawTitle() {
         let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard')
         titleboard.anchor.setTo(0.5, 0)
+        titleboard.alpha = 0.8
         let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
         title.anchor.setTo(0.5, 0)
     }

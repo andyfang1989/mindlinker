@@ -6,17 +6,18 @@ import KnightAnimationBoardState from './KnightAnimationBoard'
 import KnightTaskBootState from './KnightTaskBoot'
 import TooltipBuilder from '../../util/TooltipBuilder'
 import {setScaleAndAnchorForObject, createLoadingText, loadStart, fileComplete} from '../../UIUtil'
+import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
     init() {
-        console.log('KnightStoryBoard Init.')
+        logDebugInfo('KnightStoryBoard Init.')
         this.endIndex = 2
     }
 
     loadStoryImages() {
         for (let i = 0; i < this.gameContext.spritesheets.length; i++) {
             let spriteSheet = this.gameContext.spritesheets[i]
-            console.log('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
+            logDebugInfo('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
             this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
         }
 
@@ -41,7 +42,7 @@ export default class extends Phaser.State {
     }
 
     preload() {
-        console.log('KnightStoryBoard Preload.')
+        logDebugInfo('KnightStoryBoard Preload.')
         this.setCurrentGameContext()
     }
 
@@ -52,8 +53,6 @@ export default class extends Phaser.State {
     }
 
     renderTaskList() {
-        this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
         let tasks = this.gameContext.task_configs.tasks
         let padding = this.game.width - 200
         let x = padding
@@ -84,8 +83,13 @@ export default class extends Phaser.State {
         }
     }
 
+    renderHomeButton() {
+        this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
+        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
+    }
+
     create() {
-        console.log('Knight Story Board Create.')
+        logDebugInfo('Knight Story Board Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
             this.game.load.onLoadStart.addOnce(loadStart, this);
@@ -114,7 +118,7 @@ export default class extends Phaser.State {
     }
     
     onClickTask() {
-        console.log('On Click A Task: ' + this.task.taskName)
+        logDebugInfo('On Click A Task: ' + this.task.taskName)
         this.game.state.add('KnightAnimationBoard', KnightAnimationBoardState, false)
         this.game.state.add('KnightTaskBoot', KnightTaskBootState, false)
         this.game.global.currentTaskIndex = this.index
@@ -133,6 +137,7 @@ export default class extends Phaser.State {
 
     renderState() {
         this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/1440, this.game.height/700)
+        this.renderHomeButton()
         this.renderTaskList()
     }
 }

@@ -5,6 +5,7 @@ import Phaser from 'phaser'
 import TooltipBuilder from '../util/TooltipBuilder'
 import config from '../config'
 import {sendHttpRequest, printHttpResponse} from '../UIUtil'
+import {logDebugInfo} from '../Logger'
 
 export default class extends Phaser.Sprite {
     constructor({game, name, x, y, asset, frame}) {
@@ -48,7 +49,7 @@ export default class extends Phaser.Sprite {
 
     playNextAction() {
         let nextAction = this.actionQueue.shift()
-        console.log('Update: play animation ' + nextAction.name + ' with xOffset: ' + nextAction.xOffset + ' and yOffset: ' + nextAction.yOffset + ' with sprite key: ' + nextAction.spriteKey)
+        logDebugInfo('Update: play animation ' + nextAction.name + ' with xOffset: ' + nextAction.xOffset + ' and yOffset: ' + nextAction.yOffset + ' with sprite key: ' + nextAction.spriteKey)
         let newX = this.x + nextAction.xOffset
         let newY = this.y + nextAction.yOffset
         if (nextAction.spriteKey !== this.key) {

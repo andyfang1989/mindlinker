@@ -6,15 +6,16 @@ import KnightBootState from './knight/KnightBoot'
 import PrincessBootState from './princess/PrincessBoot'
 import TooltipBuilder from '../util/TooltipBuilder'
 import {setScaleAndAnchorForObject, hideBlock, createLoadingText, loadStart, fileComplete} from '../UIUtil'
+import {logDebugInfo} from '../Logger'
 
 export default class extends Phaser.State {
     init() {
-        console.log('Main Menu Init.')
+        logDebugInfo('Main Menu Init.')
         this.endIndex = 1
     }
 
     preload() {
-        console.log('Main Menu Preload.')
+        logDebugInfo('Main Menu Preload.')
         this.rootContext = JSON.parse(this.game.cache.getText('rootContext'))
     }
 
@@ -23,7 +24,7 @@ export default class extends Phaser.State {
         this.game.load.image('mainBackground', this.rootContext.main_background_image)
         for (let i = 0; i < spriteSheets.length; i++) {
             let spriteSheet = spriteSheets[i]
-            console.log('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
+            logDebugInfo('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
             this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
         }
         this.storyKey = 'Stories'
@@ -31,7 +32,7 @@ export default class extends Phaser.State {
     }
 
     renderBackground() {
-        console.log('Game width: ' + this.game.width + ' Game Height: ' + this.game.height)
+        logDebugInfo('Game width: ' + this.game.width + ' Game Height: ' + this.game.height)
         this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width/1440, this.game.height/900)
     }
 
@@ -64,7 +65,7 @@ export default class extends Phaser.State {
     }
 
     create() {
-        console.log('Main Menu Create.')
+        logDebugInfo('Main Menu Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
             this.game.load.onLoadStart.addOnce(loadStart, this);
@@ -94,14 +95,14 @@ export default class extends Phaser.State {
     }**/
 
     onClickStory() {
-        console.log('On Click Story.')
+        logDebugInfo('On Click Story.')
         this.game.global.currentStoryConfig = this.story.storyConf
         if (this.index === 0) {
             this.game.state.add('KnightBoot', KnightBootState, false)
         } else {
             this.game.state.add('PrincessBoot', PrincessBootState, false)
         }
-        console.log('About to start the story: ' + this.story.storyState)
+        logDebugInfo('About to start the story: ' + this.story.storyState)
         this.game.state.start(this.story.storyState)
     }
 
