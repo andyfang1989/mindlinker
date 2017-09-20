@@ -4040,6 +4040,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.Game {
 
         this.state.add('RootBoot', __WEBPACK_IMPORTED_MODULE_3__states_RootBoot__["a" /* default */], false);
         this.state.start('RootBoot');
+        this.scale.scaleMode = __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.ScaleManager.SHOW_ALL;
     }
 }
 
@@ -12607,4 +12608,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-2d741f.js.map
+//# sourceMappingURL=bundle-f329ee.js.map
