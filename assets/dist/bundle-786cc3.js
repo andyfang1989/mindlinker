@@ -4036,12 +4036,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class Game extends __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.Game {
     constructor() {
-        super(window.screen.availWidth, window.screen.availHeight - 50, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', null);
+        let create = function () {
+            this.scale.scaleMode = __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.ScaleManager.SHOW_ALL;
+        };
+        super(window.screen.availWidth, window.screen.availHeight - 50, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', { create: create });
 
         this.state.add('RootBoot', __WEBPACK_IMPORTED_MODULE_3__states_RootBoot__["a" /* default */], false);
         this.state.start('RootBoot');
-        this.scale.scaleMode = __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.ScaleManager.SHOW_ALL;
     }
+
 }
 
 window.game = new Game();
@@ -12608,4 +12611,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-f329ee.js.map
+//# sourceMappingURL=bundle-786cc3.js.map
