@@ -5,13 +5,14 @@ import Phaser from 'phaser'
 import KnightBootState from './knight/KnightBoot'
 import PrincessBootState from './princess/PrincessBoot'
 import TooltipBuilder from '../util/TooltipBuilder'
-import {setScaleAndAnchorForObject, hideBlock, createLoadingText, loadStart, fileComplete} from '../UIUtil'
+import {hideBlock, createLoadingText, loadStart, fileComplete, rescaleObject, rescaleXOffset, rescaleYOffset} from '../UIUtil'
 import {logDebugInfo} from '../Logger'
 
 export default class extends Phaser.State {
     init() {
         logDebugInfo('Main Menu Init.')
         this.endIndex = 1
+        this.storyKey = 'Stories'
     }
 
     preload() {
@@ -27,32 +28,36 @@ export default class extends Phaser.State {
             logDebugInfo('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
             this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
         }
-        this.storyKey = 'Stories'
         this.game.load.start()
     }
 
     renderBackground() {
-        logDebugInfo('Game width: ' + this.game.width + ' Game Height: ' + this.game.height)
-        this.game.add.sprite(0, 0, 'mainBackground').scale.setTo(this.game.width/1440, this.game.height/900)
+        let background = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'mainBackground')
+        background.anchor.setTo(0.5, 0.5)
+        rescaleObject(background, this.game, 1, 1)
     }
 
     renderMenu() {
-        let logo = this.game.add.sprite(200, 200, 'logo')
+        let logoXOffset = rescaleXOffset(200, this.game)
+        let logoYOffset = rescaleYOffset(240, this.game)
+        let rightPadding = rescaleXOffset(350, this.game)
+        let logo = this.game.add.sprite(logoXOffset, logoYOffset, 'logo')
+        rescaleObject(logo, this.game, 0.3, 0.3)
         logo.anchor.setTo(0.5, 0.5)
-        logo.scale.setTo(0.3,0.3)
         let stories = this.rootContext.stories
-        let padding = this.game.width - Math.round((this.game.width - 700) / 2)
-        let x = padding
-        let y = Math.round(this.game.height * 0.55)
+        let x = this.game.width - rightPadding
+        let y = rescaleYOffset(500, this.game)
+        let spacer = rescaleXOffset(400, this.game)
         /**let nextButton = this.game.add.button(x, y, 'nextImage', this.onClickNext, this)
         setScaleAndAnchorForObject(nextButton, -0.5, 0.5, 0.5, 0.5)
         TooltipBuilder(this.game, nextButton, '下一页', 'bottom')**/
         for (let i = 0; i < 2; i++) {
             let story = stories[this.endIndex - i]
             let storyButton = this.game.add.button(x, y, this.storyKey, this.onClickStory, {game: this.game, story: story, index: this.endIndex - i}, story.storyHoverImageKey, story.storyNormalImageKey, story.storyClickImageKey, story.storyDisabledImageKey)
-            setScaleAndAnchorForObject(storyButton, 1, 1, 0.5, 0.5)
+            rescaleObject(storyButton, this.game, 1, 1)
+            storyButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, storyButton, story.storyName, 'bottom')
-            x -= 400
+            x -= spacer
         }
         /**let prevButton = this.game.add.button(x, y, 'nextImage', this.onClickPrevious, this)
         setScaleAndAnchorForObject(prevButton, 0.5, 0.5, 0.5, 0.5)
@@ -68,9 +73,9 @@ export default class extends Phaser.State {
         logDebugInfo('Main Menu Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
-            this.game.load.onLoadStart.addOnce(loadStart, this);
-            this.game.load.onFileComplete.add(fileComplete, this);
-            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.game.load.onLoadStart.addOnce(loadStart, this)
+            this.game.load.onFileComplete.add(fileComplete, this)
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this)
             this.loadAssets()
         } else {
             this.renderState()

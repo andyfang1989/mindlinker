@@ -4,7 +4,7 @@
 import Phaser from 'phaser'
 import TooltipBuilder from '../util/TooltipBuilder'
 import config from '../config'
-import {sendHttpRequest, printHttpResponse} from '../UIUtil'
+import {sendHttpRequest, printHttpResponse, rescaleObject, rescaleXOffset, rescaleYOffset} from '../UIUtil'
 import {logDebugInfo} from '../Logger'
 
 export default class extends Phaser.Sprite {
@@ -56,15 +56,21 @@ export default class extends Phaser.Sprite {
 
     showButtons() {
         this.start = false
-        let offset = 0
+
+        let x = this.game.world.width - rescaleXOffset(80, this.game)
+        let y = rescaleYOffset(80, this.game)
+        let spacer = rescaleXOffset(20, this.game)
         if (this.taskCompleted) {
-            this.nextButton = this.game.add.button(this.game.world.width - 75, 50, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
-            this.nextButton.scale.setTo(-1, 1)
+            this.nextButton = this.game.add.button(x, y, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            rescaleObject(this.nextButton, this.game, -1, 1)
             this.nextButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '开始下一关', 'bottom')
-            offset += 75
+            //Do plus here since it's scaled to -1
+            x += rescaleXOffset(this.nextButton.width, this.game)
+            x -= spacer
         }
-        this.restartButton = this.game.add.button(this.game.world.width - 95 - offset, 50, 'Buttons', this.restart, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+        this.restartButton = this.game.add.button(x, y, 'Buttons', this.restart, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+        rescaleObject(this.restartButton, this.game, 1, 1)
         this.restartButton.anchor.setTo(0.5, 0.5)
         TooltipBuilder(this.game, this.restartButton, '重新开始', 'bottom')
     }
@@ -72,8 +78,8 @@ export default class extends Phaser.Sprite {
     playNextAction() {
         let nextAction = this.actionQueue.shift()
         logDebugInfo('Update: play animation ' + nextAction.name + ' with xOffset: ' + nextAction.xOffset + ' and yOffset: ' + nextAction.yOffset)
-        let newX = this.x + nextAction.xOffset
-        let newY = this.y + nextAction.yOffset
+        let newX = this.x + rescaleXOffset(nextAction.xOffset, this.game)
+        let newY = this.y + rescaleYOffset(nextAction.yOffset, this.game)
         if (nextAction.name.indexOf('Walk') >= 0) {
             this.walking = true
         } else {

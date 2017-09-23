@@ -95,3 +95,15 @@ export function printHttpResponse() {
         alert(this.responseText);
     }
 }
+
+export function rescaleObject(obj, game, sX, sY) {
+    obj.scale.setTo(sX * game.global.hScale, sY * game.global.vScale)
+}
+
+export function rescaleXOffset(offset, game) {
+    return Math.round(offset * game.global.hScale)
+}
+
+export function rescaleYOffset(offset, game) {
+    return Math.round(offset * game.global.vScale)
+}

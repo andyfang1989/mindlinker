@@ -5,7 +5,7 @@ import Phaser from 'phaser'
 import KnightAnimationBoardState from './KnightAnimationBoard'
 import KnightTaskBootState from './KnightTaskBoot'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {setScaleAndAnchorForObject, createLoadingText, loadStart, fileComplete} from '../../UIUtil'
+import {createLoadingText, loadStart, fileComplete, rescaleObject, rescaleXOffset, rescaleYOffset} from '../../UIUtil'
 import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
@@ -53,48 +53,57 @@ export default class extends Phaser.State {
     }
 
     renderTaskList() {
+        let rightPadding = rescaleXOffset(200, this.game)
         let tasks = this.gameContext.task_configs.tasks
-        let padding = this.game.width - 200
-        let x = padding
-        let y = Math.round(this.game.height * 0.5)
+        let x = this.game.width - rightPadding
+        let y = rescaleYOffset(450, this.game)
+        let spacer = rescaleXOffset(250, this.game)
+
         if (this.endIndex === 9 && this.nextButton !== undefined) {
             this.nextButton.destroy()
             this.nextButton = undefined
         } else if (this.endIndex < 9 && this.nextButton === undefined) {
             this.nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
-            setScaleAndAnchorForObject(this.nextButton, -1, 1, 0.5, 0.5)
+            rescaleObject(this.nextButton, this.game, -1, 1)
+            this.nextButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '下一页', 'bottom')
         }
-        x -= 250
+        x -= spacer
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i]
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: this.endIndex - i}, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey)
-            setScaleAndAnchorForObject(taskButton, 2, 2, 0.5, 0.5)
+            rescaleObject(taskButton, this.game, 2, 2)
+            taskButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
-            x -= 250
+            x -= spacer
         }
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy()
             this.prevButton = undefined
         } else if (this.endIndex > 2 && (this.prevButton === undefined)) {
             this.prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
-            setScaleAndAnchorForObject(this.prevButton, 1, 1, 0.5, 0.5)
+            rescaleObject(this.prevButton, this.game, 1, 1)
+            this.prevButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.prevButton, '上一页', 'bottom')
         }
     }
 
     renderHomeButton() {
-        this.homeButton = this.game.add.button(10, 10, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
+        let x = rescaleXOffset(80, this.game)
+        let y = rescaleYOffset(80, this.game)
+        this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
+        rescaleObject(this.backToTasksButton, this.game, 1, 1)
+        this.backToTasksButton.anchor.setTo(0.5, 0.5)
+        TooltipBuilder(this.game, this.backToTasksButton, '返回主界面', 'bottom')
     }
 
     create() {
         logDebugInfo('Knight Story Board Create.')
         if (!this.created) {
             this.loadingText = createLoadingText(this.game)
-            this.game.load.onLoadStart.addOnce(loadStart, this);
-            this.game.load.onFileComplete.add(fileComplete, this);
-            this.game.load.onLoadComplete.addOnce(this.loadComplete, this);
+            this.game.load.onLoadStart.addOnce(loadStart, this)
+            this.game.load.onFileComplete.add(fileComplete, this)
+            this.game.load.onLoadComplete.addOnce(this.loadComplete, this)
             this.loadAssets()
         } else {
             this.renderState()
@@ -136,7 +145,9 @@ export default class extends Phaser.State {
     }
 
     renderState() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/1440, this.game.height/700)
+        let background = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'background')
+        rescaleObject(background, this.game, 1, 1.2)
+        background.anchor.setTo(0.5, 0.5)
         this.renderHomeButton()
         this.renderTaskList()
     }

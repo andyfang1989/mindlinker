@@ -2,18 +2,17 @@
  * Created by kfang on 7/23/17.
  */
 import Phaser from 'phaser'
-import config from '../../config'
 import Princess from '../../sprites/Princess'
 import PrincessAnimationPlayer from '../../animation/PrincessAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode} from '../../UIUtil'
+import {showBlock, hideBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode, rescaleObject, rescaleXOffset, rescaleYOffset} from '../../UIUtil'
 import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
     calculateCharacterStartingPositionResponsively() {
         logDebugInfo('Game width: ' + this.game.width + ' height: ' + this.game.height)
-        this.characterStartX = Math.round(this.game.width / 2)
-        this.characterStartY = Math.round(this.game.height / 2)
+        this.characterStartX = this.game.world.centerX
+        this.characterStartY = this.game.world.centerY
     }
 
     getCurrentAnimationContext() {
@@ -39,25 +38,42 @@ export default class extends Phaser.State {
     }
 
     drawBackground() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        let background = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'background')
+        rescaleObject(background, this.game, 1, 1.2)
+        background.anchor.setTo(0.5, 0.5)
     }
 
     drawForeGround() {
-        this.game.add.sprite(0, 0, 'foreground').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        let foreground = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'foreground')
+        rescaleObject(foreground, this.game, 1, 1.2)
+        foreground.anchor.setTo(0.5, 0.5)
     }
 
     drawBoardButtons() {
-        this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
-        this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        let x = rescaleXOffset(80, this.game)
+        let y = rescaleYOffset(80, this.game)
+        let spacer = rescaleXOffset(20, this.game)
+        this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled')
+        x += rescaleXOffset(this.backToTasksButton.width, this.game)
+        x += spacer
+        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        x += rescaleXOffset(this.hintButton.width, this.game)
+        x += spacer
+        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        rescaleObject(this.backToTasksButton, this.game, 1, 1)
+        rescaleObject(this.hintButton, this.game, 1, 1)
+        rescaleObject(this.startButton, this.game, 1, 1)
+        this.backToTasksButton.anchor.setTo(0.5, 0.5)
+        this.hintButton.anchor.setTo(0.5, 0.5)
+        this.startButton.anchor.setTo(0.5, 0.5)
         TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
         TooltipBuilder(this.game, this.hintButton, '关卡信息', 'bottom')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
+        TooltipBuilder(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom')
     }
 
     drawMainCharacterAtStartingPosition() {
-        let startX = this.characterStartX + this.taskContext.character_x_offset
-        let startY = this.characterStartY - Math.round(this.taskContext.character_height_in_pixel / 3) + this.taskContext.character_y_offset
+        let startX = this.characterStartX + rescaleXOffset(this.taskContext.character_x_offset, this.game)
+        let startY = this.characterStartY + rescaleYOffset(this.taskContext.character_y_offset - Math.round(this.taskContext.character_height_in_pixel * 0.405), this.game)
         logDebugInfo('Draw main character at location: x = ' + startX + ' and y = ' + startY)
         let sprite = new Princess({
             game: this.game,
@@ -84,7 +100,8 @@ export default class extends Phaser.State {
 
     drawPath() {
         logDebugInfo('Draw task path.')
-        let path = this.game.add.sprite(Math.round(this.game.width/2), Math.round(this.game.height/2), 'taskPath')
+        let path = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'taskPath')
+        rescaleObject(path, this.game, 1, 1)
         path.anchor.setTo(0.5, 0.5)
     }
 
@@ -121,9 +138,11 @@ export default class extends Phaser.State {
     }
 
     addWorkspace() {
+        let scaleFactor = this.scale.scaleFactor
+        logDebugInfo('scale factor x: ' + scaleFactor.x + ' scale factor y: ' + scaleFactor.y)
         /* Reposition block div first */
-        repositionBlock(252, 744, this.game.height)
-        repositionText(429, 315, 252)
+        repositionBlock(rescaleXOffset(250, this.game) / scaleFactor.x, rescaleYOffset(600, this.game) / scaleFactor.y, this.game.height / scaleFactor.y)
+        repositionText(rescaleYOffset(300, this.game) / scaleFactor.y, rescaleYOffset(300, this.game) / scaleFactor.y, rescaleXOffset(250, this.game) / scaleFactor.x)
         let options = {
             comments: false,
             disable: false,
@@ -189,15 +208,18 @@ export default class extends Phaser.State {
         }
     }
 
-    onBackHome() {
-        this.game.state.start('MainMenu')
+    onBackToTasks() {
+        hideBlock()
+        this.game.state.start('PrincessStoryBoard')
     }
 
     drawTitle() {
-        let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard')
+        let titleboard = this.game.add.sprite(this.game.world.centerX, 0, 'titleboard')
+        rescaleObject(titleboard, this.game, 1, 1)
         titleboard.anchor.setTo(0.5, 0)
         titleboard.alpha = 0.8
-        let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
+        let title = this.game.add.text(this.game.world.centerX, rescaleYOffset(20, this.game), this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
+        rescaleObject(title, this.game, 1, 1)
         title.anchor.setTo(0.5, 0)
     }
 
@@ -228,15 +250,16 @@ export default class extends Phaser.State {
 
     showInformationBoard() {
         if (!this.infoBoard) {
-            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100,'info')
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-rescaleYOffset(100, this.game),'info')
+            rescaleObject(this.infoBoard, this.game, 0.7, 0.7)
             this.infoBoard.anchor.setTo(0.5, 0.5)
-            this.infoBoard.scale.setTo(0.7,0.7)
             this.infoBoard.alpha = 0.8
-            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-rescaleYOffset(100, this.game), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            rescaleObject(this.info, this.game, 0.7, 0.7)
             this.info.anchor.setTo(0.5, 0.5)
-            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+rescaleXOffset(270, this.game), Math.round(this.game.height / 2)-rescaleYOffset(285, this.game), 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            rescaleObject(this.closeButton, this.game, 0.5, 0.5)
             this.closeButton.anchor.setTo(0.5, 0.5)
-            this.closeButton.scale.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.closeButton, '返回', 'bottom')
         } else {
             this.infoBoard.visible = true

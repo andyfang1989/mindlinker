@@ -2,22 +2,23 @@
  * Created by kfang on 6/15/17.
  */
 import Phaser from 'phaser'
-import config from '../../config'
 import Knight from '../../sprites/Knight'
 import InteractiveItem from '../../sprites/InteractiveItem'
 import KnightAnimationPlayer from '../../animation/KnightAnimationPlayer'
 import TooltipBuilder from '../../util/TooltipBuilder'
-import {showBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode} from '../../UIUtil'
+import {showBlock, hideBlock, createLoadingText, loadStart, fileComplete, repositionBlock, repositionText, getInstruction, setReadableCode, rescaleObject, rescaleXOffset, rescaleYOffset} from '../../UIUtil'
 import {logDebugInfo} from '../../Logger'
 
 export default class extends Phaser.State {
     calculateAndSetGridPositionAndStepSizesResponsively(){
         logDebugInfo('Game width: ' + this.game.width + ' height: ' + this.game.height)
-        this.step_width_in_pixel = Math.round(this.game.width * this.gameContext.step_x_percentage)
-        this.step_height_in_pixel = Math.round(this.game.height * this.gameContext.step_y_percentage)
+        this.step_width_in_pixel = rescaleXOffset(this.gameContext.grid_image_width, this.game)
+        this.step_height_in_pixel = rescaleYOffset(this.gameContext.grid_image_height, this.game)
 
-        this.gridStartX = Math.round(this.game.width * this.gameContext.grid_board_top_left_x_percentage)
-        this.gridStartY = Math.round(this.game.height * this.gameContext.grid_board_top_left_y_percentage)
+        this.gridStartX = rescaleXOffset(this.gameContext.grid_board_top_left_x, this.game) + Math.round(this.step_width_in_pixel / 2)
+        this.gridStartY = rescaleYOffset(this.gameContext.grid_board_top_left_y, this.game) + Math.round(this.step_height_in_pixel / 2)
+        logDebugInfo('step_width_in_pixel: ' + this.step_width_in_pixel + ' step_height_in_pixel: ' + this.step_height_in_pixel)
+        logDebugInfo('gridStartX: ' + this.gridStartX + ' this.gridStartY: ' + this.gridStartY)
     }
 
     getCurrentAnimationContext() {
@@ -32,8 +33,8 @@ export default class extends Phaser.State {
             backwardSpriteKey: this.gameContext.spritesheets[1].key,
             gridWidth: this.gameContext.grid_x_size,
             gridHeight: this.gameContext.grid_y_size,
-            step_width_in_pixel: this.step_width_in_pixel,
-            step_height_in_pixel: this.step_height_in_pixel,
+            step_width_in_pixel: this.gameContext.grid_image_width,
+            step_height_in_pixel: this.gameContext.grid_image_height,
             maxSteps: this.taskContext.maxSteps,
             passCondition: this.taskContext.passCondition,
             items: this.taskContext.items,
@@ -52,16 +53,37 @@ export default class extends Phaser.State {
     }
 
     drawBackground() {
-        this.game.add.sprite(0, 0, 'background').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
+        let background = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'background')
+        rescaleObject(background, this.game, 1, 1.2)
+        background.anchor.setTo(0.5, 0.5)
+    }
+
+    drawForeGround() {
+        let foreground = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'foreground')
+        rescaleObject(foreground, this.game, 1, 1.2)
+        foreground.anchor.setTo(0.5, 0.5)
     }
 
     drawBoardButtons() {
-        this.homeButton = this.game.add.button(10, 0, 'Buttons', this.onBackHome, this, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
-        this.hintButton = this.game.add.button(this.homeButton.width + 20, 0, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
-        this.startButton = this.game.add.button(this.homeButton.width + this.hintButton.width + 40, 0, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        let x = rescaleXOffset(80, this.game)
+        let y = rescaleYOffset(80, this.game)
+        let spacer = rescaleXOffset(20, this.game)
+        this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled')
+        x += rescaleXOffset(this.backToTasksButton.width, this.game)
+        x += spacer
+        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        x += rescaleXOffset(this.hintButton.width, this.game)
+        x += spacer
+        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        rescaleObject(this.backToTasksButton, this.game, 1, 1)
+        rescaleObject(this.hintButton, this.game, 1, 1)
+        rescaleObject(this.startButton, this.game, 1, 1)
+        this.backToTasksButton.anchor.setTo(0.5, 0.5)
+        this.hintButton.anchor.setTo(0.5, 0.5)
+        this.startButton.anchor.setTo(0.5, 0.5)
         TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
         TooltipBuilder(this.game, this.hintButton, '关卡信息', 'bottom')
-        TooltipBuilder(this.game, this.homeButton, '返回主界面', 'bottom')
+        TooltipBuilder(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom')
     }
 
     drawMainCharacterAtStartingPosition() {
@@ -69,8 +91,8 @@ export default class extends Phaser.State {
         const characterStartGridX = this.taskContext.character_starting_grid_x
         const characterStartGridY = this.taskContext.character_starting_grid_y
         logDebugInfo('Calculating character starting position: grid starting x: ' + this.gridStartX + ' grid starting y: ' + this.gridStartY)
-        const targetGridXMid = this.gridStartX + Math.round((characterStartGridX + 0.5) * this.step_width_in_pixel)
-        const targetGridYMid = this.gridStartY + Math.round((characterStartGridY + 0.5) * this.step_height_in_pixel) - Math.round(cHeight / 2)
+        const targetGridXMid = this.gridStartX + Math.round(characterStartGridX * this.step_width_in_pixel)
+        const targetGridYMid = this.gridStartY + Math.round(characterStartGridY * this.step_height_in_pixel) - Math.round(cHeight * 0.4)
         logDebugInfo('Draw main character at location: x = ' + targetGridXMid + ' and y = ' + targetGridYMid)
         let sprite = new Knight({
             game: this.game,
@@ -81,6 +103,7 @@ export default class extends Phaser.State {
             frame: 0
         })
         this.knight = this.game.add.existing(sprite)
+        rescaleObject(this.knight, this.game, 1, 1)
     }
 
     drawInteractionItems() {
@@ -92,8 +115,8 @@ export default class extends Phaser.State {
             for (let i = 0; i < interactionItems.length; i++) {
                 let item = interactionItems[i]
                 let position = item.coordinate
-                let ix = this.gridStartX + Math.round((position.x + position.xOffset) * gridWidth)
-                let iy = this.gridStartY + Math.round((position.y + 1 + position.yOffset - item.gridHeight) * gridHeight)
+                let ix = this.gridStartX + Math.round(position.x * gridWidth) + rescaleXOffset(Math.round(position.xOffset * item.width), this.game)
+                let iy = this.gridStartY + Math.round(position.y * gridHeight) + rescaleYOffset(Math.round(position.yOffset * item.height), this.game)
                 let sprite = new InteractiveItem({
                     game: this.game,
                     name: item.spriteKey,
@@ -102,7 +125,7 @@ export default class extends Phaser.State {
                     asset: item.spriteSheetKey,
                     frame: 0
                 })
-                sprite.scale.setTo(gridWidth * item.gridWidth / item.width, gridHeight * item.gridHeight / item.height)
+                rescaleObject(sprite, this.game, 1, 1)
                 this.interactiveItemSprites.push(sprite)
                 this.game.add.existing(sprite)
                 this.addAnimationsForSprite(sprite, item.spritesheets)
@@ -183,30 +206,20 @@ export default class extends Phaser.State {
                 }
                 for (let j = 0; j < item.coordinates.length; j++) {
                     let position = item.coordinates[j]
-                    let ix = this.gridStartX + Math.round((position.x + position.xOffset) * gridWidth)
-                    let iy = this.gridStartY + Math.round((position.y + 1 + position.yOffset - item.gridHeight) * gridHeight)
+                    let ix = this.gridStartX + Math.round(position.x * gridWidth) + rescaleXOffset(Math.round(position.xOffset * item.width), this.game)
+                    let iy = this.gridStartY + Math.round(position.y * gridHeight) + rescaleYOffset(Math.round(position.yOffset * item.height), this.game)
                     logDebugInfo('Draw item ' + i + ' at gx = ' + position.x + ' gy = ' + position.y + ' x = ' + ix + ' y = ' + iy)
                     let itemImage = this.game.add.sprite(ix, iy, item.key)
-                    logDebugInfo('Scale item to x = ' + gridWidth * item.gridWidth / item.width + ' y = ' + gridHeight * item.gridHeight / item.height)
-                    itemImage.scale.setTo(gridWidth * item.gridWidth / item.width, gridHeight * item.gridHeight / item.height)
+                    itemImage.anchor.setTo(0.5, 0.5)
+                    rescaleObject(itemImage, this.game, 1, 1)
                 }
             }
         }
     }
 
-    drawForeGround() {
-        let fWidth = this.game.width
-        let fHeight = this.game.height
-        logDebugInfo('Draw front ground image with size width = ' + fWidth + ' height = ' + fHeight)
-        this.game.add.sprite(0, 0, 'foreground').scale.setTo(this.game.width/config.backgroundWidth, this.game.height/config.backgroundHeight)
-    }
-
     drawGridBoard() {
         let gridWidth = this.step_width_in_pixel
         let gridHeight = this.step_height_in_pixel
-        let gridImageWidth = this.gameContext.grid_image_width
-        let gridImageHeight = this.gameContext.grid_image_height
-        logDebugInfo('Grid image width: ' + gridImageWidth + ' grid image height: ' + gridImageHeight)
         let gridXSize = this.gameContext.grid_x_size
         let gridYSize = this.gameContext.grid_y_size
         logDebugInfo('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
@@ -217,7 +230,8 @@ export default class extends Phaser.State {
                 let iy = Math.round(this.gridStartY + r * gridHeight)
                 logDebugInfo('Draw grid images at r = ' + r + ' c = ' + c + ' x = ' + ix + ' y = ' + iy)
                 let gridImage = this.game.add.sprite(ix, iy, 'grid')
-                gridImage.scale.setTo(gridWidth / gridImageWidth, gridHeight / gridImageHeight)
+                rescaleObject(gridImage, this.game, 1, 1)
+                gridImage.anchor.setTo(0.5, 0.5)
             }
         }
     }
@@ -265,12 +279,15 @@ export default class extends Phaser.State {
     }
 
     addWorkspace() {
+        let scaleFactor = this.scale.scaleFactor
+        logDebugInfo('scale factor x: ' + scaleFactor.x + ' scale factor y: ' + scaleFactor.y)
         /* Reposition block div first */
-        let grid_bottom_left_x = Math.round(this.gridStartX)
-        let grid_height = this.gameContext.grid_y_size * this.step_height_in_pixel
-        let grid_bottom_left_y = Math.round(this.gridStartY + grid_height)
-        repositionBlock(grid_bottom_left_x, grid_bottom_left_y, this.game.height)
-        repositionText(this.gridStartY, grid_height, grid_bottom_left_x)
+        let grid_bottom_left_x = rescaleXOffset(this.gameContext.grid_board_top_left_x, this.game)
+        let grid_bottom_left_y = rescaleYOffset(this.gameContext.grid_board_top_left_y + Math.round(this.gameContext.grid_y_size * this.gameContext.grid_image_height), this.game)
+        let grid_height = rescaleYOffset(Math.round(this.gameContext.grid_y_size * this.gameContext.grid_image_height), this.game)
+
+        repositionBlock(grid_bottom_left_x / scaleFactor.x, grid_bottom_left_y / scaleFactor.y, this.game.height / scaleFactor.y)
+        repositionText(rescaleYOffset(this.gameContext.grid_board_top_left_y, this.game) / scaleFactor.y, grid_height / scaleFactor.y, grid_bottom_left_x / scaleFactor.x)
         logDebugInfo('Block div x: ' + grid_bottom_left_x + ' yt: ' + grid_bottom_left_y + ' h: ' + this.game.height)
         let options = {
             comments: false,
@@ -343,15 +360,16 @@ export default class extends Phaser.State {
 
     showInformationBoard() {
         if (!this.infoBoard) {
-            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100,'info')
+            this.infoBoard = this.game.add.image(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-rescaleYOffset(100, this.game),'info')
+            rescaleObject(this.infoBoard, this.game, 0.7, 0.7)
             this.infoBoard.anchor.setTo(0.5, 0.5)
-            this.infoBoard.scale.setTo(0.7,0.7)
             this.infoBoard.alpha = 0.8
-            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-100, this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            this.info = this.game.add.text(Math.round(this.game.width / 2), Math.round(this.game.height / 2)-rescaleYOffset(100, this.game), this.taskContext.info + '\nHints:\n' + this.taskContext.hint, {font: 'bold 20px Arial', fill: '#FFFFFF', align: 'left'})
+            rescaleObject(this.info, this.game, 0.7, 0.7)
             this.info.anchor.setTo(0.5, 0.5)
-            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+270, Math.round(this.game.height / 2)-285, 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            this.closeButton = this.game.add.button(Math.round(this.game.width / 2)+rescaleXOffset(270, this.game), Math.round(this.game.height / 2)-rescaleYOffset(285, this.game), 'Buttons', this.hideInformationBoard, this, 'buttons/restart/hover', 'buttons/restart/normal', 'buttons/restart/click', 'buttons/restart/disabled')
+            rescaleObject(this.closeButton, this.game, 0.5, 0.5)
             this.closeButton.anchor.setTo(0.5, 0.5)
-            this.closeButton.scale.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.closeButton, '返回', 'bottom')
         } else {
             this.infoBoard.visible = true
@@ -366,8 +384,9 @@ export default class extends Phaser.State {
         this.closeButton.visible = false
     }
 
-    onBackHome() {
-        this.game.state.start('MainMenu')
+    onBackToTasks() {
+        hideBlock()
+        this.game.state.start('KnightStoryBoard')
     }
 
     loadComplete() {
@@ -377,10 +396,12 @@ export default class extends Phaser.State {
     }
 
     drawTitle() {
-        let titleboard = this.game.add.sprite(Math.round(this.game.width / 2), 0, 'titleboard')
+        let titleboard = this.game.add.sprite(this.game.world.centerX, 0, 'titleboard')
+        rescaleObject(titleboard, this.game, 1, 1)
         titleboard.anchor.setTo(0.5, 0)
         titleboard.alpha = 0.8
-        let title = this.game.add.text(Math.round(this.game.width / 2), 10, this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
+        let title = this.game.add.text(this.game.world.centerX, rescaleYOffset(20, this.game), this.taskContext.title, {font: 'bold 30px Arial', fill: '#3399FF', align: 'center'})
+        rescaleObject(title, this.game, 1, 1)
         title.anchor.setTo(0.5, 0)
     }
 
