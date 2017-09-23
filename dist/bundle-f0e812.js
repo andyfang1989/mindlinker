@@ -4052,7 +4052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 class Game extends __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.Game {
     constructor() {
-        super(window.screen.availWidth, window.screen.availHeight - 50, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', null);
+        super(Math.max(window.screen.availWidth, window.screen.availHeight), Math.min(window.screen.availWidth, window.screen.availHeight) - 50, __WEBPACK_IMPORTED_MODULE_2_phaser___default.a.CANVAS, 'content', null);
 
         this.state.add('RootBoot', __WEBPACK_IMPORTED_MODULE_3__states_RootBoot__["a" /* default */], false);
         this.state.start('RootBoot');
@@ -12725,4 +12725,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-0abc73.js.map
+//# sourceMappingURL=bundle-f0e812.js.map
