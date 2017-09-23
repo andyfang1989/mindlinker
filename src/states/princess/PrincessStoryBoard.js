@@ -52,11 +52,11 @@ export default class extends Phaser.State {
     }
 
     renderTaskList() {
-        let rightPadding = rescaleXOffset(200, this.game)
+        let rightPadding = rescaleXOffset(250, this.game)
         let tasks = this.gameContext.task_configs.tasks
         let x = this.game.width - rightPadding
         let y = rescaleYOffset(450, this.game)
-        let spacer = rescaleXOffset(250, this.game)
+        let spacer = rescaleXOffset(20, this.game)
 
         if (this.endIndex === 9 && this.nextButton !== undefined) {
             this.nextButton.destroy()
@@ -67,7 +67,8 @@ export default class extends Phaser.State {
             this.nextButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, this.nextButton, '下一页', 'bottom')
         }
-        x -= spacer
+        x -= rescaleXOffset(200, this.game)
+
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i]
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: this.endIndex - i}, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey)
@@ -75,8 +76,12 @@ export default class extends Phaser.State {
             taskButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
             x -= spacer
+            if (i < 2) {
+                x -= taskButton.width
+            } else {
+                x -= rescaleXOffset(200, this.game)
+            }
         }
-
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy()
             this.prevButton = undefined

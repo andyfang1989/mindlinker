@@ -92,7 +92,7 @@ export default class extends Phaser.State {
         const characterStartGridY = this.taskContext.character_starting_grid_y
         logDebugInfo('Calculating character starting position: grid starting x: ' + this.gridStartX + ' grid starting y: ' + this.gridStartY)
         const targetGridXMid = this.gridStartX + Math.round(characterStartGridX * this.step_width_in_pixel)
-        const targetGridYMid = this.gridStartY + Math.round(characterStartGridY * this.step_height_in_pixel) - Math.round(cHeight * 0.4)
+        const targetGridYMid = this.gridStartY + Math.round(characterStartGridY * this.step_height_in_pixel) - rescaleYOffset(Math.round(cHeight * 0.4), this.game)
         logDebugInfo('Draw main character at location: x = ' + targetGridXMid + ' and y = ' + targetGridYMid)
         let sprite = new Knight({
             game: this.game,

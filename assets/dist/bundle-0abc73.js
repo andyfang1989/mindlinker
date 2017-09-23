@@ -594,6 +594,7 @@ function showBlock() {
 function createLoadingText(game) {
     let loadingText = game.add.text(game.world.centerX, game.world.centerY, '努力加载中...', { font: "65px Arial", fill: "#F3FF33", align: "center" });
     loadingText.anchor.set(0.5);
+    rescaleObject(loadingText, game, 1, 1);
     return loadingText;
 }
 
@@ -5453,7 +5454,7 @@ function play(animationContext) {
         const characterStartGridY = this.taskContext.character_starting_grid_y;
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__Logger__["a" /* logDebugInfo */])('Calculating character starting position: grid starting x: ' + this.gridStartX + ' grid starting y: ' + this.gridStartY);
         const targetGridXMid = this.gridStartX + Math.round(characterStartGridX * this.step_width_in_pixel);
-        const targetGridYMid = this.gridStartY + Math.round(characterStartGridY * this.step_height_in_pixel) - Math.round(cHeight * 0.4);
+        const targetGridYMid = this.gridStartY + Math.round(characterStartGridY * this.step_height_in_pixel) - __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["c" /* rescaleYOffset */])(Math.round(cHeight * 0.4), this.game);
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__Logger__["a" /* logDebugInfo */])('Draw main character at location: x = ' + targetGridXMid + ' and y = ' + targetGridYMid);
         let sprite = new __WEBPACK_IMPORTED_MODULE_1__sprites_Knight__["a" /* default */]({
             game: this.game,
@@ -5903,11 +5904,11 @@ function play(animationContext) {
     }
 
     renderTaskList() {
-        let rightPadding = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+        let rightPadding = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(250, this.game);
         let tasks = this.gameContext.task_configs.tasks;
         let x = this.game.width - rightPadding;
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(450, this.game);
-        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(250, this.game);
+        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
 
         if (this.endIndex === 9 && this.nextButton !== undefined) {
             this.nextButton.destroy();
@@ -5918,7 +5919,8 @@ function play(animationContext) {
             this.nextButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.nextButton, '下一页', 'bottom');
         }
-        x -= spacer;
+        x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i];
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: this.endIndex - i }, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey);
@@ -5926,6 +5928,11 @@ function play(animationContext) {
             taskButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
             x -= spacer;
+            if (i < 2) {
+                x -= taskButton.width;
+            } else {
+                x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+            }
         }
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy();
@@ -6154,6 +6161,7 @@ function play(animationContext) {
             frame: 0
         });
         this.princess = this.game.add.existing(sprite);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.princess, this.game, 1, 1);
         this.initPrincessPosition();
     }
 
@@ -6460,11 +6468,11 @@ function play(animationContext) {
     }
 
     renderTaskList() {
-        let rightPadding = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+        let rightPadding = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(250, this.game);
         let tasks = this.gameContext.task_configs.tasks;
         let x = this.game.width - rightPadding;
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(450, this.game);
-        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(250, this.game);
+        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
 
         if (this.endIndex === 9 && this.nextButton !== undefined) {
             this.nextButton.destroy();
@@ -6475,7 +6483,8 @@ function play(animationContext) {
             this.nextButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.nextButton, '下一页', 'bottom');
         }
-        x -= spacer;
+        x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+
         for (let i = 0; i < 3; i++) {
             let task = tasks[this.endIndex - i];
             let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: this.endIndex - i }, task.taskHoverImageKey, task.taskNormalImageKey, task.taskClickImageKey, task.taskDisabledImageKey);
@@ -6483,8 +6492,12 @@ function play(animationContext) {
             taskButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
             x -= spacer;
+            if (i < 2) {
+                x -= taskButton.width;
+            } else {
+                x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
+            }
         }
-
         if (this.endIndex === 2 && this.prevButton !== undefined) {
             this.prevButton.destroy();
             this.prevButton = undefined;
@@ -12712,4 +12725,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-2437a1.js.map
+//# sourceMappingURL=bundle-0abc73.js.map

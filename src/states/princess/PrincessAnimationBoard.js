@@ -86,6 +86,7 @@ export default class extends Phaser.State {
             frame: 0
         })
         this.princess = this.game.add.existing(sprite)
+        rescaleObject(this.princess, this.game, 1, 1)
         this.initPrincessPosition()
     }
 
