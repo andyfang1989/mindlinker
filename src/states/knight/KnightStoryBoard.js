@@ -58,15 +58,13 @@ export default class extends Phaser.State {
         let x = this.game.width - rightPadding
         let y = rescaleYOffset(450, this.game)
         let spacer = rescaleXOffset(20, this.game)
-
-        if (this.endIndex === 9 && this.nextButton !== undefined) {
-            this.nextButton.destroy()
-            this.nextButton = undefined
-        } else if (this.endIndex < 9 && this.nextButton === undefined) {
-            this.nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
-            rescaleObject(this.nextButton, this.game, -1, 1)
-            this.nextButton.anchor.setTo(0.5, 0.5)
-            TooltipBuilder(this.game, this.nextButton, '下一页', 'bottom')
+        let nextButton = undefined
+        let prevButton = undefined
+        if (this.endIndex < 9 && nextButton === undefined) {
+            nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            rescaleObject(nextButton, this.game, -1, 1)
+            nextButton.anchor.setTo(0.5, 0.5)
+            TooltipBuilder(this.game, nextButton, '下一页', 'bottom')
         }
         x -= rescaleXOffset(200, this.game)
 
@@ -83,14 +81,11 @@ export default class extends Phaser.State {
                 x -= rescaleXOffset(200, this.game)
             }
         }
-        if (this.endIndex === 2 && this.prevButton !== undefined) {
-            this.prevButton.destroy()
-            this.prevButton = undefined
-        } else if (this.endIndex > 2 && (this.prevButton === undefined)) {
-            this.prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
-            rescaleObject(this.prevButton, this.game, 1, 1)
-            this.prevButton.anchor.setTo(0.5, 0.5)
-            TooltipBuilder(this.game, this.prevButton, '上一页', 'bottom')
+        if (this.endIndex > 2 && (prevButton === undefined)) {
+            prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
+            rescaleObject(prevButton, this.game, 1, 1)
+            prevButton.anchor.setTo(0.5, 0.5)
+            TooltipBuilder(this.game, prevButton, '上一页', 'bottom')
         }
     }
 

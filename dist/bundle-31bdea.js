@@ -5909,15 +5909,13 @@ function play(animationContext) {
         let x = this.game.width - rightPadding;
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(450, this.game);
         let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
-
-        if (this.endIndex === 9 && this.nextButton !== undefined) {
-            this.nextButton.destroy();
-            this.nextButton = undefined;
-        } else if (this.endIndex < 9 && this.nextButton === undefined) {
-            this.nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.nextButton, this.game, -1, 1);
-            this.nextButton.anchor.setTo(0.5, 0.5);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.nextButton, '下一页', 'bottom');
+        let nextButton = undefined;
+        let prevButton = undefined;
+        if (this.endIndex < 9 && nextButton === undefined) {
+            nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(nextButton, this.game, -1, 1);
+            nextButton.anchor.setTo(0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, nextButton, '下一页', 'bottom');
         }
         x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
 
@@ -5934,14 +5932,11 @@ function play(animationContext) {
                 x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
             }
         }
-        if (this.endIndex === 2 && this.prevButton !== undefined) {
-            this.prevButton.destroy();
-            this.prevButton = undefined;
-        } else if (this.endIndex > 2 && this.prevButton === undefined) {
-            this.prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.prevButton, this.game, 1, 1);
-            this.prevButton.anchor.setTo(0.5, 0.5);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.prevButton, '上一页', 'bottom');
+        if (this.endIndex > 2 && prevButton === undefined) {
+            prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(prevButton, this.game, 1, 1);
+            prevButton.anchor.setTo(0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, prevButton, '上一页', 'bottom');
         }
     }
 
@@ -6473,15 +6468,13 @@ function play(animationContext) {
         let x = this.game.width - rightPadding;
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(450, this.game);
         let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
-
-        if (this.endIndex === 9 && this.nextButton !== undefined) {
-            this.nextButton.destroy();
-            this.nextButton = undefined;
-        } else if (this.endIndex < 9 && this.nextButton === undefined) {
-            this.nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.nextButton, this.game, -1, 1);
-            this.nextButton.anchor.setTo(0.5, 0.5);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.nextButton, '下一页', 'bottom');
+        let nextButton = undefined;
+        let prevButton = undefined;
+        if (this.endIndex < 9 && nextButton === undefined) {
+            nextButton = this.game.add.button(x, y, 'Buttons', this.onClickNext, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(nextButton, this.game, -1, 1);
+            nextButton.anchor.setTo(0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, nextButton, '下一页', 'bottom');
         }
         x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
 
@@ -6498,14 +6491,11 @@ function play(animationContext) {
                 x -= __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(200, this.game);
             }
         }
-        if (this.endIndex === 2 && this.prevButton !== undefined) {
-            this.prevButton.destroy();
-            this.prevButton = undefined;
-        } else if (this.endIndex > 2 && this.prevButton === undefined) {
-            this.prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.prevButton, this.game, 1, 1);
-            this.prevButton.anchor.setTo(0.5, 0.5);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.prevButton, '上一页', 'bottom');
+        if (this.endIndex > 2 && prevButton === undefined) {
+            prevButton = this.game.add.button(x, y, 'Buttons', this.onClickPrevious, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(prevButton, this.game, 1, 1);
+            prevButton.anchor.setTo(0.5, 0.5);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, prevButton, '上一页', 'bottom');
         }
     }
 
@@ -12725,4 +12715,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-f0e812.js.map
+//# sourceMappingURL=bundle-31bdea.js.map
