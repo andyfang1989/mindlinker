@@ -35,7 +35,7 @@
         </tr>
     {% for game in Profile.games %}
         <tr>
-            <td> {{ game.name.decode('utf-8') }}</td>
+            <td> {{ game.name }}</td>
             {% for task in game.tasks %}
             <td> 
                 {% if task.status %}

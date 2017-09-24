@@ -12,7 +12,7 @@
 <h1 align="center">学生任务进度</h1>
 <br>
 {% for student in Students %}
-<h3 align="center"> {{ student.name.decode('utf-8') }}</h3>
+<h3 align="center"> {{ student.name }}</h3>
 <br>
 <div class="table-responsive">
   <table class="table table-striped table-inverse">
@@ -31,7 +31,7 @@
         </tr>
     {% for game in student.games %}
         <tr>
-            <td> {{ game.name.decode('utf-8') }}</td>
+            <td> {{ game.name }}</td>
             {% for task in game.tasks %}
             <td> 
                 {% if task.status %}

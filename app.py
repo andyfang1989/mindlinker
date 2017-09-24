@@ -11,12 +11,12 @@ from flask_compress import Compress
 
 
 # Create the main app
-app = Flask('Mindlinker_v02', static_folder="assets")
+app = Flask('Mindlinker_v03', static_folder="assets")
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # Establish Database connection
 app.config['MONGODB_SETTINGS'] = {
     'HOST': os.environ.get('MONGODB_URI'),
-    'DB': 'FlaskLogin',
+    'DB': 'mindlinker_tables',
 }
 db = MongoEngine(app)
 app.session_interface = MongoEngineSessionInterface(db)
