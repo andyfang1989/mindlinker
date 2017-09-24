@@ -22,7 +22,7 @@ export default class extends Phaser.Sprite {
         this.speed = speed
         this.walking = false
         this.graphics = this.game.add.graphics(0, 0)
-        this.graphics.lineStyle(8, 0x33FFF6, 1)
+        this.graphics.lineStyle(10, 0x33FFF6, 1)
         this.allset = false
     }
 
@@ -59,7 +59,7 @@ export default class extends Phaser.Sprite {
 
         let x = this.game.world.width - rescaleXOffset(80, this.game)
         let y = rescaleYOffset(80, this.game)
-        let spacer = rescaleXOffset(20, this.game)
+        let spacer = rescaleXOffset(50, this.game)
         if (this.taskCompleted) {
             this.nextButton = this.game.add.button(x, y, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
             rescaleObject(this.nextButton, this.game, -1, 1)

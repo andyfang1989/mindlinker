@@ -4934,7 +4934,7 @@ function play(animationContext) {
     showButtons() {
         let x = this.game.world.width - __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(80, this.game);
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["c" /* rescaleYOffset */])(80, this.game);
-        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
+        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(50, this.game);
         if (this.taskCompleted) {
             this.nextButton = this.game.add.button(x, y, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["a" /* rescaleObject */])(this.nextButton, this.game, -1, 1);
@@ -5031,7 +5031,7 @@ function play(animationContext) {
         this.speed = speed;
         this.walking = false;
         this.graphics = this.game.add.graphics(0, 0);
-        this.graphics.lineStyle(8, 0x33FFF6, 1);
+        this.graphics.lineStyle(10, 0x33FFF6, 1);
         this.allset = false;
     }
 
@@ -5068,7 +5068,7 @@ function play(animationContext) {
 
         let x = this.game.world.width - __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(80, this.game);
         let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["c" /* rescaleYOffset */])(80, this.game);
-        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(20, this.game);
+        let spacer = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["b" /* rescaleXOffset */])(50, this.game);
         if (this.taskCompleted) {
             this.nextButton = this.game.add.button(x, y, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled');
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__UIUtil__["a" /* rescaleObject */])(this.nextButton, this.game, -1, 1);
@@ -12715,4 +12715,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-31bdea.js.map
+//# sourceMappingURL=bundle-7f2365.js.map
