@@ -4561,6 +4561,7 @@ function play(animationContext) {
     };
 
     let checkPassOrFail = function () {
+        if (Object.keys(passCondition).length === 0 && passCondition.constructor === Object) return;
         if (passConditionMatched()) {
             victory();
         } else {
@@ -4811,6 +4812,7 @@ function play(animationContext) {
     };
 
     let checkPassOrFail = function () {
+        if (Object.keys(passPath).length === 0 && passPath.constructor === Object) return;
         if (passConditionMatched()) {
             sprite.taskCompleted = true;
         } else {
@@ -5491,6 +5493,7 @@ function play(animationContext) {
                 this.interactiveItemSprites.push(sprite);
                 this.game.add.existing(sprite);
                 this.addAnimationsForSprite(sprite, item.spritesheets);
+                this.itemTrack.push(position.x + '_' + position.y);
             }
         }
     }
@@ -5499,6 +5502,8 @@ function play(animationContext) {
         let items = this.taskContext.items;
         let dGridX = this.taskContext.passCondition.destinationXGrid;
         let dGridY = this.taskContext.passCondition.destinationYGrid;
+        if (dGridX === undefined) dGridX = 0;
+        if (dGridY === undefined) dGridY = 0;
         let gridWidth = this.step_width_in_pixel;
         let gridHeight = this.step_height_in_pixel;
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__Logger__["a" /* logDebugInfo */])('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight);
@@ -5555,7 +5560,7 @@ function play(animationContext) {
                             rx = Math.floor(Math.random() * xSize);
                             ry = Math.floor(Math.random() * ySize);
                             key = rx + '_' + ry;
-                            if (key !== dGridX + '_' + dGridY && key !== sGridX + '_' + sGridY && rTrack.indexOf(key) === -1) {
+                            if (key !== dGridX + '_' + dGridY && key !== sGridX + '_' + sGridY && rTrack.indexOf(key) === -1 && this.itemTrack.indexOf(key) === -1) {
                                 item.coordinates.push({ x: rx, y: ry, xOffset: 0, yOffset: 0 });
                                 rTrack.push(rx + '_' + ry);
                                 currentCount++;
@@ -5574,6 +5579,7 @@ function play(animationContext) {
                     let itemImage = this.game.add.sprite(ix, iy, item.key);
                     itemImage.anchor.setTo(0.5, 0.5);
                     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(itemImage, this.game, 1, 1);
+                    this.itemTrack.push(position.x + '_' + position.y);
                 }
             }
         }
@@ -5602,14 +5608,6 @@ function play(animationContext) {
         for (let i = 0; i < this.taskContext.items.length; i++) {
             let item = this.taskContext.items[i];
             this.game.load.image(item.key, item.image);
-        }
-        for (let i = 0; i < this.taskContext.interactionItems.length; i++) {
-            let item = this.taskContext.interactionItems[i];
-            for (let j = 0; j < item.spritesheets.length; j++) {
-                let spriteSheet = item.spritesheets[j];
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__Logger__["a" /* logDebugInfo */])('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile);
-                this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile);
-            }
         }
     }
 
@@ -5772,9 +5770,10 @@ function play(animationContext) {
         this.drawBackground();
         this.drawBoardButtons();
         this.drawGridBoard();
+        this.itemTrack = [];
+        this.drawInteractionItems();
         this.drawItems();
         this.drawMainCharacterAtStartingPosition();
-        this.drawInteractionItems();
         this.drawForeGround();
         this.drawTitle();
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets);
@@ -5888,8 +5887,9 @@ function play(animationContext) {
     }
 
     setCurrentGameContext() {
-        this.gameContext = JSON.parse(this.game.cache.getText('gameContext'));
-        this.taskCount = this.gameContext.task_configs.tasks.length;
+        this.gameContext = JSON.parse(this.game.cache.getText('gameContext')
+        //minors 1 for free game mode
+        );this.taskCount = this.gameContext.task_configs.tasks.length - 1;
     }
 
     preload() {
@@ -5938,6 +5938,16 @@ function play(animationContext) {
             prevButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, prevButton, '上一页', 'bottom');
         }
+    }
+
+    renderFreeTask() {
+        let x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(150, this.game);
+        let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(80, this.game);
+        let task = this.gameContext.task_configs.tasks[10];
+        let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: 10 }, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(taskButton, this.game, 1, 1);
+        taskButton.anchor.setTo(0.5, 0.5);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
     }
 
     renderHomeButton() {
@@ -6002,6 +6012,7 @@ function play(animationContext) {
         background.anchor.setTo(0.5, 0.5);
         this.renderHomeButton();
         this.renderTaskList();
+        this.renderFreeTask();
     }
 });
 
@@ -6172,6 +6183,7 @@ function play(animationContext) {
     drawPath() {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__Logger__["a" /* logDebugInfo */])('Draw task path.');
         let path = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'taskPath');
+        if (Object.keys(path).length === 0 && path.constructor === Object) return;
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(path, this.game, 1, 1);
         path.anchor.setTo(0.5, 0.5);
     }
@@ -6447,8 +6459,9 @@ function play(animationContext) {
     }
 
     setCurrentGameContext() {
-        this.gameContext = JSON.parse(this.game.cache.getText('gameContext'));
-        this.taskCount = this.gameContext.task_configs.tasks.length;
+        this.gameContext = JSON.parse(this.game.cache.getText('gameContext')
+        //minors 1 for free game mode
+        );this.taskCount = this.gameContext.task_configs.tasks.length - 1;
     }
 
     preload() {
@@ -6497,6 +6510,16 @@ function play(animationContext) {
             prevButton.anchor.setTo(0.5, 0.5);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, prevButton, '上一页', 'bottom');
         }
+    }
+
+    renderFreeTask() {
+        let x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(150, this.game);
+        let y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["c" /* rescaleYOffset */])(80, this.game);
+        let task = this.gameContext.task_configs.tasks[10];
+        let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, { game: this.game, task: task, index: 10 }, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(taskButton, this.game, 1, 1);
+        taskButton.anchor.setTo(0.5, 0.5);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, taskButton, task.taskName, 'bottom');
     }
 
     renderHomeButton() {
@@ -6561,6 +6584,7 @@ function play(animationContext) {
         background.anchor.setTo(0.5, 0.5);
         this.renderHomeButton();
         this.renderTaskList();
+        this.renderFreeTask();
     }
 });
 
@@ -12715,4 +12739,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[327]);
-//# sourceMappingURL=bundle-7f2365.js.map
+//# sourceMappingURL=bundle-12de8f.js.map

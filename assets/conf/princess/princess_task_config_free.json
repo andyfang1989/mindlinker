@@ -1,0 +1,18 @@
+
+{
+    "character_width_in_pixel":129,
+    "character_height_in_pixel":221,
+    "character_x_offset": 0,
+    "character_y_offset": 0,
+    "character_starting_clock_position": 3,
+    "speed": 0.2, 
+    "pathImage": "",
+    "maxSteps":200,
+    "passPath": [
+    ],
+    "passCommand":"[]",
+    "title":"自由练习场",
+    "info":"嘿，美丽的公主啊。欢迎来到自由练习场！",
+    "hint":"自由练习吧！",
+    "toolbox": "<xml id=\"toolbox-knight\" style=\"display: none\"><block type=\"statement_start\"></block><block type=\"statement_walk\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">100</field></shadow></value></block><block type=\"statement_turn_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">60</field></shadow></value></block><block type=\"statement_turn_left\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">30</field></shadow></value></block><block type=\"statement_repeat\"><value name=\"TIMES\"><shadow type=\"math_positive_number\"><field name=\"NUM\">2</field></shadow></value></block></xml>"
+}

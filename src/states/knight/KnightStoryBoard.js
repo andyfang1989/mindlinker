@@ -38,7 +38,8 @@ export default class extends Phaser.State {
 
     setCurrentGameContext() {
         this.gameContext = JSON.parse(this.game.cache.getText('gameContext'))
-        this.taskCount = this.gameContext.task_configs.tasks.length
+        //minors 1 for free game mode
+        this.taskCount = this.gameContext.task_configs.tasks.length - 1
     }
 
     preload() {
@@ -87,6 +88,16 @@ export default class extends Phaser.State {
             prevButton.anchor.setTo(0.5, 0.5)
             TooltipBuilder(this.game, prevButton, '上一页', 'bottom')
         }
+    }
+
+    renderFreeTask() {
+        let x = rescaleXOffset(250, this.game)
+        let y = rescaleYOffset(80, this.game)
+        let task = this.gameContext.task_configs.tasks[10]
+        let taskButton = this.game.add.button(x, y, 'Buttons', this.onClickTask, {game: this.game, task: task, index: 10}, 'buttons/home/hover', 'buttons/home/normal', 'buttons/home/click', 'buttons/home/disabled')
+        rescaleObject(taskButton, this.game, 1, 1)
+        taskButton.anchor.setTo(0.5, 0.5)
+        TooltipBuilder(this.game, taskButton, task.taskName, 'bottom')
     }
 
     renderHomeButton() {
@@ -151,5 +162,6 @@ export default class extends Phaser.State {
         background.anchor.setTo(0.5, 0.5)
         this.renderHomeButton()
         this.renderTaskList()
+        this.renderFreeTask()
     }
 }

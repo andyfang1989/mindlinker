@@ -129,6 +129,7 @@ export default class extends Phaser.State {
                 this.interactiveItemSprites.push(sprite)
                 this.game.add.existing(sprite)
                 this.addAnimationsForSprite(sprite, item.spritesheets)
+                this.itemTrack.push(position.x + '_' + position.y)
             }
         }
     }
@@ -137,6 +138,10 @@ export default class extends Phaser.State {
         let items = this.taskContext.items
         let dGridX = this.taskContext.passCondition.destinationXGrid
         let dGridY = this.taskContext.passCondition.destinationYGrid
+        if (dGridX === undefined)
+            dGridX = 0
+        if (dGridY === undefined)
+            dGridY = 0
         let gridWidth = this.step_width_in_pixel
         let gridHeight = this.step_height_in_pixel
         logDebugInfo('Background width = ' + this.game.width + ' Background height = ' + this.game.height + ' GridStartX: ' + this.gridStartX + ' GridStartY = ' + this.gridStartY + ' GridWidth = ' + gridWidth + ' GridHeight = ' + gridHeight)
@@ -193,7 +198,7 @@ export default class extends Phaser.State {
                             rx = Math.floor(Math.random() * xSize)
                             ry = Math.floor(Math.random() * ySize)
                             key = rx + '_' + ry
-                            if (key !== (dGridX + '_' + dGridY) && key !== (sGridX + '_' + sGridY) && rTrack.indexOf(key) === -1) {
+                            if (key !== (dGridX + '_' + dGridY) && key !== (sGridX + '_' + sGridY) && rTrack.indexOf(key) === -1 && this.itemTrack.indexOf(key) === -1) {
                                 item.coordinates.push({x: rx, y: ry, xOffset: 0, yOffset: 0})
                                 rTrack.push(rx + '_' + ry)
                                 currentCount++
@@ -212,6 +217,7 @@ export default class extends Phaser.State {
                     let itemImage = this.game.add.sprite(ix, iy, item.key)
                     itemImage.anchor.setTo(0.5, 0.5)
                     rescaleObject(itemImage, this.game, 1, 1)
+                    this.itemTrack.push(position.x + '_' + position.y)
                 }
             }
         }
@@ -240,14 +246,6 @@ export default class extends Phaser.State {
         for (let i = 0; i < this.taskContext.items.length; i++) {
             let item = this.taskContext.items[i]
             this.game.load.image(item.key, item.image)
-        }
-        for (let i = 0; i < this.taskContext.interactionItems.length; i++) {
-            let item = this.taskContext.interactionItems[i]
-            for (let j = 0; j < item.spritesheets.length; j++) {
-                let spriteSheet = item.spritesheets[j]
-                logDebugInfo('Load spritesheet: ' + spriteSheet.spritesheet + ' as ' + spriteSheet.key + ' with data file: ' + spriteSheet.datafile)
-                this.game.load.atlasJSONArray(spriteSheet.key, spriteSheet.spritesheet, spriteSheet.datafile)
-            }
         }
     }
 
@@ -410,9 +408,10 @@ export default class extends Phaser.State {
         this.drawBackground()
         this.drawBoardButtons()
         this.drawGridBoard()
+        this.itemTrack = []
+        this.drawInteractionItems()
         this.drawItems()
         this.drawMainCharacterAtStartingPosition()
-        this.drawInteractionItems()
         this.drawForeGround()
         this.drawTitle()
         this.addAnimationsForSprite(this.knight, this.gameContext.spritesheets)

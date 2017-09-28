@@ -24,6 +24,7 @@ export default class extends Phaser.Sprite {
         this.graphics = this.game.add.graphics(0, 0)
         this.graphics.lineStyle(10, 0x33FFF6, 1)
         this.allset = false
+        this.freeMode = false
     }
 
     update() {
@@ -40,7 +41,9 @@ export default class extends Phaser.Sprite {
                 sendHttpRequest(printHttpResponse, operation, url, params)
             }
             this.drawLine()
-            this.playFinalSound()
+            if (!this.freeMode) {
+                this.playFinalSound()
+            }
             this.showButtons()
             this.allset = true
         }

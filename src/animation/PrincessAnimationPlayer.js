@@ -230,6 +230,10 @@ export default function play(animationContext) {
     // Main logic for runProgram
     let inStream = JSON.parse(animationContext.instruction)
     if (inStream.length > 0) {
+        if (passPath.length === 0) {
+            logDebugInfo('Free mode: Yes.')
+            sprite.freeMode = true
+        }
         executeInStream(inStream, 0)
         checkPassOrFail()
     }

@@ -444,6 +444,9 @@ export default function play(animationContext) {
     }
 
     let checkPassOrFail = function () {
+        if (Object.keys(passCondition).length === 0 && passCondition.constructor === Object) {
+            return
+        }
         if (passConditionMatched()) {
             victory()
         } else {
@@ -453,6 +456,9 @@ export default function play(animationContext) {
 // Main logic for runProgram
     let inStream = JSON.parse(animationContext.instruction)
     if (inStream.length > 0) {
+        if (Object.keys(passCondition).length === 0 && passCondition.constructor === Object) {
+            sprite.freeMode = true
+        }
         executeInStream(inStream, 0)
         if (!failed) {
             checkPassOrFail()

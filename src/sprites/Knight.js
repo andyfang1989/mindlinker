@@ -16,6 +16,7 @@ export default class extends Phaser.Sprite {
         this.playingAnimation = null
         this.taskCompleted = false
         this.allset = false
+        this.freeMode = false
     }
 
     update() {

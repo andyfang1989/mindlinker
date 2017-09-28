@@ -101,9 +101,11 @@ export default class extends Phaser.State {
 
     drawPath() {
         logDebugInfo('Draw task path.')
-        let path = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'taskPath')
-        rescaleObject(path, this.game, 1, 1)
-        path.anchor.setTo(0.5, 0.5)
+        if (this.taskContext.pathImage.length > 0) {
+            let path = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'taskPath')
+            rescaleObject(path, this.game, 1, 1)
+            path.anchor.setTo(0.5, 0.5)
+        }
     }
 
     setCurrentGameContexts() {
@@ -116,7 +118,9 @@ export default class extends Phaser.State {
 
     loadPath() {
         logDebugInfo('Load path image: ' + this.taskContext.pathImage)
-        this.game.load.image('taskPath', this.taskContext.pathImage)
+        if (this.taskContext.pathImage.length >  0) {
+            this.game.load.image('taskPath', this.taskContext.pathImage)
+        }
     }
 
     addAnimationsForSprite(sprite, spritesheets) {

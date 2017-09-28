@@ -4004,6 +4004,14 @@
             "taskClickImageKey":"buttons/tasks/click/Lv10",
             "taskHoverImageKey":"buttons/tasks/hover/Lv10",
             "taskConf":"assets/conf/princess/princess_task_config_10.json"
+         },
+         {
+            "taskName":"自由练习场",
+            "taskNormalImageKey":"buttons/tasks/normal/Lv01",
+            "taskDisabledImageKey":"buttons/tasks/disabled/Lv01",
+            "taskClickImageKey":"buttons/tasks/click/Lv01",
+            "taskHoverImageKey":"buttons/tasks/hover/Lv01",
+            "taskConf":"assets/conf/princess/princess_task_config_free.json"
          }
       ]
    }
