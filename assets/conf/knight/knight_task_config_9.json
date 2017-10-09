@@ -6,16 +6,18 @@
    ],
    "interactionItems":[  
       {  
-         "spriteKey":"trainingStump1",
+         "spriteKey":"trainingStump",
          "spriteSheetKey":"KnightAnimationItems",
          "animationKey":"AttackTrainingStump",
          "statusPostAnimation":"Attacked",
-         "coordinate":{  
-            "x":5,
-            "y":2,
-            "xOffset":0,
-            "yOffset":-0.5            
-         },
+         "coordinates":[
+            {  
+               "x":5,
+               "y":2,
+               "xOffset":0,
+               "yOffset":-0.5            
+            }
+         ],
          "blocker":true,
          "width":95,
          "height":214,
@@ -63,7 +65,7 @@
       ],
       "interactions":[  
          {  
-            "sprite":"trainingStump1",
+            "sprite":"trainingStump0",
             "status":"Attacked"
          }
       ]

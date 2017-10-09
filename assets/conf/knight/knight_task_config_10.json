@@ -128,60 +128,24 @@
    ],
    "interactionItems":[  
       {  
-         "spriteKey":"trainingStump1",
+         "spriteKey":"trainingStump",
          "spriteSheetKey":"KnightAnimationItems",
          "animationKey":"AttackTrainingStump",
          "statusPostAnimation":"Attacked",
-         "coordinate":{  
-            "x":3,
-            "y":2,
-            "xOffset":0,
-            "yOffset":-0.5 
-         },
-         "blocker":true,
-         "width":95,
-         "height":214,
-         "gridWidth":1,
-         "gridHeight":3,
-         "spritesheets":[  
-            {  
-               "key":"KnightAnimationItems",
-               "animations":[  
-                  {  
-                     "name":"AttackTrainingStump",
-                     "rate":12,
-                     "loop":false,
-                     "frames":[  
-                        "training-stump/training-stump000",
-                        "training-stump/training-stump001",
-                        "training-stump/training-stump002",
-                        "training-stump/training-stump003",
-                        "training-stump/training-stump004",
-                        "training-stump/training-stump005",
-                        "training-stump/training-stump006",
-                        "training-stump/training-stump007",
-                        "training-stump/training-stump008",
-                        "training-stump/training-stump009",
-                        "training-stump/training-stump010",
-                        "training-stump/training-stump011",
-                        "training-stump/training-stump012"
-                     ]
-                  }
-               ]
-            }
-         ]
-      },
-      {  
-         "spriteKey":"trainingStump2",
-         "spriteSheetKey":"KnightAnimationItems",
-         "animationKey":"AttackTrainingStump",
-         "statusPostAnimation":"Attacked",
-         "coordinate":{  
-            "x":7,
-            "y":0,
-            "xOffset":0,
-            "yOffset":-0.5 
-         },
+         "coordinates":[
+             {  
+                 "x":3,
+                 "y":2,
+                 "xOffset":0,
+                 "yOffset":-0.5 
+             },
+             {  
+                 "x":7,
+                 "y":0,
+                 "xOffset":0,
+                 "yOffset":-0.5 
+             }
+         ],
          "blocker":true,
          "width":95,
          "height":214,
@@ -229,11 +193,11 @@
       ],
       "interactions":[  
          {  
-            "sprite":"trainingStump1",
+            "sprite":"trainingStump0",
             "status":"Attacked"
          },
          {  
-            "sprite":"trainingStump2",
+            "sprite":"trainingStump1",
             "status":"Attacked"
          }
       ]

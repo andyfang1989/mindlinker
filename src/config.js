@@ -6,5 +6,7 @@ export default {
     localStorageName: 'phaseres6webpack',
     url: 'mindlinker.herokuapp.com',
     updateTaskStatus: 'updateTaskStatusByUserIdByGameIdByTaskId',
+    getSandboxConf: 'getSandboxForUser',
+    createSandboxForUser: 'createSandboxForUser',
     debug: true
 }

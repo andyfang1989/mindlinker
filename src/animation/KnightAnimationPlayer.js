@@ -152,13 +152,16 @@ export default function play(animationContext) {
         }
     }
 
-    let findItemSpriteDefinitionByPositionOffset = function (xOffset, yOffset) {
+    let findItemSpriteContextByPositionOffset = function (xOffset, yOffset) {
         let xP = currentGridX + xOffset
         let yP = currentGridY + yOffset
         for (let i = 0; i < interactiveItems.length; i++) {
             let itemDef = interactiveItems[i]
-            if (itemDef.coordinate.x + '_' + itemDef.coordinate.y === xP + '_' + yP) {
-                return itemDef
+            for (let j = 0; j < itemDef.coordinates.length; j++) {
+                let position = itemDef.coordinates[j]
+                if (position.x + '_' + position.y === xP + '_' + yP) {
+                    return {def: itemDef, index: j}
+                }
             }
         }
         return null
@@ -166,10 +169,12 @@ export default function play(animationContext) {
 
     let attack = function () {
         logDebugInfo('Animation Played: Attack')
-        let interactiveSpriteDef = findItemSpriteDefinitionByPositionOffset(faceRight ? 1 : -1, 0)
+        let interactiveSpriteContext = findItemSpriteContextByPositionOffset(faceRight ? 1 : -1, 0)
         let spriteToActivate = null
-        if (interactiveSpriteDef !== null) {
-            let interactiveSprite = findItemSpriteBySpriteName(interactiveSpriteDef.spriteKey)
+        if (interactiveSpriteContext !== null) {
+            let interactiveSpriteDef = interactiveSpriteContext.def
+            let index = interactiveSpriteContext.index
+            let interactiveSprite = findItemSpriteBySpriteName(interactiveSpriteDef.spriteKey + index)
             logDebugInfo('Add action to sprite: ' + interactiveSprite.name)
             interactiveSprite.actionQueue.push({
                 name: interactiveSpriteDef.animationKey,

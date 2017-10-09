@@ -24,3 +24,4 @@ class User(db.Document):
     expire_t = db.DateTimeField(default=datetime.datetime.now())
     last_active_t = db.DateTimeField(default=datetime.datetime.now())
     game_status = db.StringField(default='')
+    sandbox_conf = db.StringField(default='')

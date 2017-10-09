@@ -3,6 +3,8 @@
  */
 import Phaser from 'phaser'
 import {logDebugInfo} from '../../Logger'
+import config from '../../config'
+import {sendHttpRequest} from '../../UIUtil'
 
 export default class extends Phaser.State {
     setCurrentGameContext() {
@@ -15,9 +17,16 @@ export default class extends Phaser.State {
     }
 
     loadCurrentTaskConfig() {
-        let taskIndex = this.game.global.currentTaskIndex
-        logDebugInfo('Current task conf: ' + this.gameContext.task_configs.tasks[taskIndex].taskConf)
-        this.game.load.text('taskContext', this.gameContext.task_configs.tasks[taskIndex].taskConf)
+        if (this.game.global.selfTask) {
+            let url = config.getSandboxConf
+            let operation = 'GET'
+            let params = JSON.stringify({})
+            sendHttpRequest(this.renderKnightAnimationBoardOnGettingSandboxConf, operation, url, params)
+        } else {
+            let taskIndex = this.game.global.currentTaskIndex
+            logDebugInfo('Current task conf: ' + this.gameContext.task_configs.tasks[taskIndex].taskConf)
+            this.game.load.text('taskContext', this.gameContext.task_configs.tasks[taskIndex].taskConf)
+        }
     }
 
     preload() {
@@ -27,6 +36,24 @@ export default class extends Phaser.State {
 
     render() {
         logDebugInfo('KnightTaskBoot Render.')
-        this.state.start('KnightAnimationBoard')
+        if (!this.game.global.selfTask) {
+            logDebugInfo('From KnightTaskBoot Switch to KnightAnimationBoard.')
+            this.game.state.start('KnightAnimationBoard')
+        }
+    }
+
+    renderKnightAnimationBoardOnGettingSandboxConf() {
+        logDebugInfo('KnightTaskBoot RenderKnightAnimationBoardOnGettingSandboxConf.')
+        if(this.readyState == 4 && this.status == 200) {
+            let conf = JSON.parse(this.responseText)
+            logDebugInfo('Sandbox Conf: ' + conf.toString())
+            if (conf.character_starting_grid_x === undefined) {
+                alert('您还未制作沙盘游戏！')
+                window.game.state.start('KnightStoryBoard')
+            } else {
+                window.game.global.currentSandboxConf = conf
+                window.game.state.start('KnightAnimationBoard')
+            }
+        }
     }
 }

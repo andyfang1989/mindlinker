@@ -5413,7 +5413,7 @@ function play(animationContext) {
         this.game.sound.play('press');
         let animationContext = this.getCurrentAnimationContext(this.gameContext);
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__animation_KnightAnimationPlayer__["a" /* default */])(animationContext);
-        this.startButton.visible = false;
+        this.editTitleButton.visible = false;
     }
 
     drawBackground() {
@@ -5435,18 +5435,18 @@ function play(animationContext) {
         this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled');
         x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["b" /* rescaleXOffset */])(this.backToTasksButton.width, this.game);
         x += spacer;
-        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
-        x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["b" /* rescaleXOffset */])(this.hintButton.width, this.game);
+        this.editInfoButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
+        x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["b" /* rescaleXOffset */])(this.editInfoButton.width, this.game);
         x += spacer;
-        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
+        this.editTitleButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(this.backToTasksButton, this.game, 1, 1);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(this.hintButton, this.game, 1, 1);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(this.startButton, this.game, 1, 1);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(this.editInfoButton, this.game, 1, 1);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__UIUtil__["a" /* rescaleObject */])(this.editTitleButton, this.game, 1, 1);
         this.backToTasksButton.anchor.setTo(0.5, 0.5);
-        this.hintButton.anchor.setTo(0.5, 0.5);
-        this.startButton.anchor.setTo(0.5, 0.5);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'bottom');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, '关卡信息', 'bottom');
+        this.editInfoButton.anchor.setTo(0.5, 0.5);
+        this.editTitleButton.anchor.setTo(0.5, 0.5);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.editTitleButton, '开始', 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.editInfoButton, '关卡信息', 'bottom');
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__util_TooltipBuilder__["a" /* default */])(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom');
     }
 
@@ -6107,7 +6107,7 @@ function play(animationContext) {
         let animationContext = this.getCurrentAnimationContext(this.gameContext);
         this.princess.start = true;
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__animation_PrincessAnimationPlayer__["a" /* default */])(animationContext);
-        this.startButton.visible = false;
+        this.editTitleButton.visible = false;
     }
 
     drawBackground() {
@@ -6129,18 +6129,18 @@ function play(animationContext) {
         this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled');
         x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(this.backToTasksButton.width, this.game);
         x += spacer;
-        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
-        x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(this.hintButton.width, this.game);
+        this.editInfoButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled');
+        x += __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["b" /* rescaleXOffset */])(this.editInfoButton.width, this.game);
         x += spacer;
-        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
+        this.editTitleButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled');
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.backToTasksButton, this.game, 1, 1);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.hintButton, this.game, 1, 1);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.startButton, this.game, 1, 1);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.editInfoButton, this.game, 1, 1);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__UIUtil__["a" /* rescaleObject */])(this.editTitleButton, this.game, 1, 1);
         this.backToTasksButton.anchor.setTo(0.5, 0.5);
-        this.hintButton.anchor.setTo(0.5, 0.5);
-        this.startButton.anchor.setTo(0.5, 0.5);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.startButton, '开始', 'bottom');
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.hintButton, '关卡信息', 'bottom');
+        this.editInfoButton.anchor.setTo(0.5, 0.5);
+        this.editTitleButton.anchor.setTo(0.5, 0.5);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.editTitleButton, '开始', 'bottom');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.editInfoButton, '关卡信息', 'bottom');
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__util_TooltipBuilder__["a" /* default */])(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom');
     }
 

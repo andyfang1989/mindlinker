@@ -503,6 +503,14 @@
    ],
    "task_configs":{
       "background":"assets/images/knight/knight_story_background.png",
+      "sandbox": {
+         "taskName":"骑士沙盘",
+         "taskNormalImageKey":"buttons/tasks/normal/Lv01",
+         "taskDisabledImageKey":"buttons/tasks/disabled/Lv01",
+         "taskClickImageKey":"buttons/tasks/click/Lv01",
+         "taskHoverImageKey":"buttons/tasks/hover/Lv01",
+         "taskConf":"assets/conf/knight/knight_sandbox_config.json"
+      },
       "tasks":[  
          {  
             "taskName":"第一关",

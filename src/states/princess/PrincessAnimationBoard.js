@@ -34,7 +34,7 @@ export default class extends Phaser.State {
         let animationContext = this.getCurrentAnimationContext(this.gameContext)
         this.princess.start = true
         PrincessAnimationPlayer(animationContext)
-        this.startButton.visible = false
+        this.editTitleButton.visible = false
     }
 
     drawBackground() {
@@ -56,18 +56,18 @@ export default class extends Phaser.State {
         this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled')
         x += rescaleXOffset(this.backToTasksButton.width, this.game)
         x += spacer
-        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
-        x += rescaleXOffset(this.hintButton.width, this.game)
+        this.editInfoButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        x += rescaleXOffset(this.editInfoButton.width, this.game)
         x += spacer
-        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        this.editTitleButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
         rescaleObject(this.backToTasksButton, this.game, 1, 1)
-        rescaleObject(this.hintButton, this.game, 1, 1)
-        rescaleObject(this.startButton, this.game, 1, 1)
+        rescaleObject(this.editInfoButton, this.game, 1, 1)
+        rescaleObject(this.editTitleButton, this.game, 1, 1)
         this.backToTasksButton.anchor.setTo(0.5, 0.5)
-        this.hintButton.anchor.setTo(0.5, 0.5)
-        this.startButton.anchor.setTo(0.5, 0.5)
-        TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
-        TooltipBuilder(this.game, this.hintButton, '关卡信息', 'bottom')
+        this.editInfoButton.anchor.setTo(0.5, 0.5)
+        this.editTitleButton.anchor.setTo(0.5, 0.5)
+        TooltipBuilder(this.game, this.editTitleButton, '开始', 'bottom')
+        TooltipBuilder(this.game, this.editInfoButton, '关卡信息', 'bottom')
         TooltipBuilder(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom')
     }
 

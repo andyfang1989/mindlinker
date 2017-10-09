@@ -36,6 +36,7 @@ class User(UserMixin):
         expire_t=None,
         last_active_t=None,
         game_status=None,
+        sandbox_conf=None,
     ):
         self.user_id = user_id
         self.email = email
@@ -49,6 +50,7 @@ class User(UserMixin):
         self.game_status = game_status or copy.deepcopy(
             json.dumps(DEFAULT_GAME_MAP),
         )
+        self.sandbox_conf = sandbox_conf
 
     @classmethod
     def from_email(cls, email):
@@ -70,6 +72,7 @@ class User(UserMixin):
                 expire_t=doc.expire_t,
                 last_active_t=doc.last_active_t,
                 game_status=doc.game_status,
+                sandbox_conf = doc.sandbox_conf or None,
             )
         else:
             current_app.logger.debug(
@@ -96,6 +99,7 @@ class User(UserMixin):
                 expire_t=doc.expire_t,
                 last_active_t=doc.last_active_t,
                 game_status=doc.game_status,
+                sandbox_conf=doc.sandbox_conf or None,
             )
         else:
             current_app.logger.debug(
@@ -117,6 +121,7 @@ class User(UserMixin):
             expire_t=doc.expire_t,
             last_active_t=doc.last_active_t,
             game_status=doc.game_status,
+            sandbox_conf=doc.sandbox_conf or None
         )
 
     def get_user_doc(self):
@@ -147,6 +152,7 @@ class User(UserMixin):
             expire_t=self.expire_t,
             last_active_t=self.last_active_t,
             game_status=self.game_status,
+            sandbox_conf=self.sandbox_conf or None
         )
         current_app.logger.debug('Try to save new user...')
         # Save new user doc to db
@@ -174,6 +180,11 @@ class User(UserMixin):
         """Set last active timestamp."""
         timestamp = datetime.datetime.now()
         return _set_doc_field(user_id, 'last_active_t', timestamp)
+
+    @staticmethod
+    def set_sandbox_conf(user_id, conf):
+        """Set sandbox conf."""
+        return _set_doc_field(user_id, 'sandbox_conf', conf)
 
     @classmethod
     def get_users_by_mentor(cls, mentor):

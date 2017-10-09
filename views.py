@@ -267,6 +267,35 @@ def assignMentor():
             msg='Invalid request arguments.',
         )
 
+# Create a sandbox for user
+@app.route('/createSandboxForUser', methods=['POST'])
+@login_required
+def createSandboxForUser():
+    if request.method == 'POST':
+        data = request.json
+        current_app.logger.debug(data)
+        doc = User(user_id=current_user.user_id).get_user_doc()
+        try:
+            status = User.set_sandbox_conf(current_user.user_id, data)
+            status &= User.set_last_active_time(current_user.user_id)
+            if not status:
+                current_app.logger.debug('update db for sandbox complete.')
+            else:
+                current_app.logger.debug('update db for sandbox failed.')
+        except:
+            current_app.logger.debug('db transaction failed')        
+    else:
+        return render_template(
+            '/auth/internalerror.html',
+            msg='Invalid request arguments.',
+        )
+
+# Gets a sandbox for user
+@app.route('/getSandboxForUser', methods=['GET'])
+@login_required
+def getSandboxForUser():
+    doc = User(user_id=current_user.user_id).get_user_doc()
+    return jsonify(doc.sandbox_conf)
 
 # Add admin page route `\admin`.
 admin.add_view(AdminModelView(models.User))

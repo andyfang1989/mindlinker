@@ -19,8 +19,8 @@
     <div id="block" style="position: absolute;top: 0px;height: 400px;right: 0px;left: 0px;bottom: 0px;opacity: 0.8"></div>
 {% endblock %}
 {% block scripts %}
-<script src="assets/dist/vendor.bundle-9a2d47.js"></script>
-<script src="assets/dist/bundle-9a2d47.js"></script>
+<script src="assets/dist/vendor.bundle-c53720.js"></script>
+<script src="assets/dist/bundle-c53720.js"></script>
 {% endblock %}
 
 <style>

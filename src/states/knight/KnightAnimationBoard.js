@@ -49,7 +49,7 @@ export default class extends Phaser.State {
         this.game.sound.play('press')
         let animationContext = this.getCurrentAnimationContext(this.gameContext)
         KnightAnimationPlayer(animationContext)
-        this.startButton.visible = false
+        this.editTitleButton.visible = false
     }
 
     drawBackground() {
@@ -71,18 +71,18 @@ export default class extends Phaser.State {
         this.backToTasksButton = this.game.add.button(x, y, 'Buttons', this.onBackToTasks, this, 'buttons/star/hover', 'buttons/star/normal', 'buttons/star/click', 'buttons/star/disabled')
         x += rescaleXOffset(this.backToTasksButton.width, this.game)
         x += spacer
-        this.hintButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
-        x += rescaleXOffset(this.hintButton.width, this.game)
+        this.editInfoButton = this.game.add.button(x, y, 'Buttons', this.showInformationBoard, this, 'buttons/info/hover', 'buttons/info/normal', 'buttons/info/click', 'buttons/info/disabled')
+        x += rescaleXOffset(this.editInfoButton.width, this.game)
         x += spacer
-        this.startButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
+        this.editTitleButton = this.game.add.button(x, y, 'Buttons', this.play, this, 'buttons/start/hover', 'buttons/start/normal', 'buttons/start/click', 'buttons/start/disabled')
         rescaleObject(this.backToTasksButton, this.game, 1, 1)
-        rescaleObject(this.hintButton, this.game, 1, 1)
-        rescaleObject(this.startButton, this.game, 1, 1)
+        rescaleObject(this.editInfoButton, this.game, 1, 1)
+        rescaleObject(this.editTitleButton, this.game, 1, 1)
         this.backToTasksButton.anchor.setTo(0.5, 0.5)
-        this.hintButton.anchor.setTo(0.5, 0.5)
-        this.startButton.anchor.setTo(0.5, 0.5)
-        TooltipBuilder(this.game, this.startButton, '开始', 'bottom')
-        TooltipBuilder(this.game, this.hintButton, '关卡信息', 'bottom')
+        this.editInfoButton.anchor.setTo(0.5, 0.5)
+        this.editTitleButton.anchor.setTo(0.5, 0.5)
+        TooltipBuilder(this.game, this.editTitleButton, '开始', 'bottom')
+        TooltipBuilder(this.game, this.editInfoButton, '关卡信息', 'bottom')
         TooltipBuilder(this.game, this.backToTasksButton, '返回关卡选择页面', 'bottom')
     }
 
@@ -114,22 +114,25 @@ export default class extends Phaser.State {
             let gridHeight = this.step_height_in_pixel
             for (let i = 0; i < interactionItems.length; i++) {
                 let item = interactionItems[i]
-                let position = item.coordinate
-                let ix = this.gridStartX + Math.round(position.x * gridWidth) + rescaleXOffset(Math.round(position.xOffset * item.width), this.game)
-                let iy = this.gridStartY + Math.round(position.y * gridHeight) + rescaleYOffset(Math.round(position.yOffset * item.height), this.game)
-                let sprite = new InteractiveItem({
-                    game: this.game,
-                    name: item.spriteKey,
-                    x: ix,
-                    y: iy,
-                    asset: item.spriteSheetKey,
-                    frame: 0
-                })
-                rescaleObject(sprite, this.game, 1, 1)
-                this.interactiveItemSprites.push(sprite)
-                this.game.add.existing(sprite)
-                this.addAnimationsForSprite(sprite, item.spritesheets)
-                this.itemTrack.push(position.x + '_' + position.y)
+                let positions = item.coordinates
+                for (let j = 0; j < item.coordinates.length; j++) {
+                    let position = positions[j]
+                    let ix = this.gridStartX + Math.round(position.x * gridWidth) + rescaleXOffset(Math.round(position.xOffset * item.width), this.game)
+                    let iy = this.gridStartY + Math.round(position.y * gridHeight) + rescaleYOffset(Math.round(position.yOffset * item.height), this.game)
+                    let sprite = new InteractiveItem({
+                        game: this.game,
+                        name: item.spriteKey + j,
+                        x: ix,
+                        y: iy,
+                        asset: item.spriteSheetKey,
+                        frame: 0
+                    })
+                    rescaleObject(sprite, this.game, 1, 1)
+                    this.interactiveItemSprites.push(sprite)
+                    this.game.add.existing(sprite)
+                    this.addAnimationsForSprite(sprite, item.spritesheets)
+                    this.itemTrack.push(position.x + '_' + position.y)
+                }
             }
         }
     }
@@ -254,7 +257,11 @@ export default class extends Phaser.State {
     }
 
     setCurrentTaskContext() {
-        this.taskContext = JSON.parse(this.game.cache.getText('taskContext'))
+        if (!this.game.global.selfTask) {
+            this.taskContext = JSON.parse(this.game.cache.getText('taskContext'))
+        } else {
+            this.taskContext = this.game.global.currentSandboxConf
+        }
     }
 
     addAnimationsForSprite(sprite, spritesheets) {

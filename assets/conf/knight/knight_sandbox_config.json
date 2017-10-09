@@ -1,0 +1,112 @@
+{  
+   "resourceStartX": 200,
+   "resourceStartY": 750,
+   "character_starting_grid_x":0,
+   "character_starting_grid_y":0,
+   "items":[  
+      {  
+         "key":"stone",
+         "image":"assets/images/knight/background/block-stone.png",
+         "count":0,
+         "random":false,
+         "coordinates":[
+         ],
+         "blocker":true,
+         "width":163,
+         "height":73,
+         "xoffset":0,
+         "yoffset":0,
+         "max": -1
+      },
+      {  
+         "key":"stump",
+         "image":"assets/images/knight/background/block-stump.png",
+         "count":0,
+         "random":false,
+         "coordinates":[  
+         ],
+         "blocker":true,
+         "width":163,
+         "height":73,
+         "xoffset":0,
+         "yoffset":-0.3,
+         "max": -1
+      },
+      {  
+         "key":"victory",
+         "image":"assets/images/knight/background/victory-flag.png",
+         "count":1,
+         "random":false,
+         "coordinates":[
+         ],
+         "blocker":false,
+         "width":102,
+         "height":222,
+         "xoffset":0,
+         "yoffset":-0.5,
+         "max": 1
+      }
+   ],
+   "interactionItems":[  
+      {  
+         "spriteKey":"trainingStump",
+         "spriteSheetKey":"KnightAnimationItems",
+         "animationKey":"AttackTrainingStump",
+         "statusPostAnimation":"Attacked",
+         "coordinates":[
+         ],
+         "blocker":true,
+         "width":95,
+         "height":214,
+         "xoffset":0,
+         "yoffset":-0.5,
+         "max": -1,
+         "spritesheets":[  
+            {  
+               "key":"KnightAnimationItems",
+               "animations":[  
+                  {  
+                     "name":"AttackTrainingStump",
+                     "rate":12,
+                     "loop":false,
+                     "frames":[  
+                        "training-stump/training-stump000",
+                        "training-stump/training-stump001",
+                        "training-stump/training-stump002",
+                        "training-stump/training-stump003",
+                        "training-stump/training-stump004",
+                        "training-stump/training-stump005",
+                        "training-stump/training-stump006",
+                        "training-stump/training-stump007",
+                        "training-stump/training-stump008",
+                        "training-stump/training-stump009",
+                        "training-stump/training-stump010",
+                        "training-stump/training-stump011",
+                        "training-stump/training-stump012"
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ],
+   "maxSteps":40,
+   "failCondition":{  
+
+   },
+   "passCondition":{  
+      "destinationXGrid":0,
+      "destinationYGrid":0,
+      "pathMatched":false,
+      "path":[  
+
+      ],
+      "interactions":[
+      ]
+   },
+   "title":"",
+   "info":"",
+   "hint":"",
+   "testScript":"",
+   "toolbox": "<xml id=\"toolbox-knight\" style=\"display: none\"><block type=\"statement_start\"></block><block type=\"statement_attack\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_walk_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_walk_left\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_walk_up\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_walk_down\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_jump_right\"><value name=\"STEPS\"><shadow type=\"math_positive_number\"><field name=\"NUM\">1</field></shadow></value></block><block type=\"statement_repeat\"><value name=\"TIMES\"><shadow type=\"math_positive_number\"><field name=\"NUM\">2</field></shadow></value></block></xml>"
+}
