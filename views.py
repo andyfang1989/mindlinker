@@ -77,6 +77,7 @@ def main():
 # Login/logout
 @app.route('/login', methods=['GET','POST'])
 def login():
+    '''
     error_message = ''
     if request.method == 'POST':
         #if not recaptchaCheck(request.form['g-recaptcha-response']):
@@ -103,7 +104,8 @@ def login():
                 else:
                     error_message = '登录失败'
                     current_app.logger.debug('登录失败!')
-    return render_template('/auth/login.html', error_message=error_message)
+                    '''
+    return redirect('/userGameStatuses')
 
 
 @app.route('/logout')
