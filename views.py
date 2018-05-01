@@ -105,7 +105,7 @@ def login():
                     error_message = '登录失败'
                     current_app.logger.debug('登录失败!')
                     '''
-    return redirect('/userGameStatuses')
+    return render_template('/index.html')
 
 
 @app.route('/logout')
