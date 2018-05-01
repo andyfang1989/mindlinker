@@ -82,6 +82,7 @@ def login():
         #if not recaptchaCheck(request.form['g-recaptcha-response']):
             #return '请点击人机身份验证!'
         # check form keys
+        '''
         if 'email' in request.form and 'password' in request.form:
             user = User.from_email(request.form['email'])
             if user is None:
@@ -104,6 +105,8 @@ def login():
                     error_message = '登录失败'
                     current_app.logger.debug('登录失败!')
     return render_template('/auth/login.html', error_message=error_message)
+    '''
+        return redirect('/userGameStatuses')
 
 
 @app.route('/logout')
@@ -276,10 +279,11 @@ def createSandboxForUser():
         current_app.logger.debug(data)
         doc = User(user_id=current_user.user_id).get_user_doc()
         try:
-            status = User.set_sandbox_conf(current_user.user_id, data)
-            status &= User.set_last_active_time(current_user.user_id)
-            if not status:
+            status = User.set_sandbox_conf(current_user.user_id, json.dumps(data))
+            status &=User.set_last_active_time(current_user.user_id)
+            if status:
                 current_app.logger.debug('update db for sandbox complete.')
+                return json.dumps({'success': True}, 200, {'contentType':'application/json'})
             else:
                 current_app.logger.debug('update db for sandbox failed.')
         except:
@@ -295,7 +299,7 @@ def createSandboxForUser():
 @login_required
 def getSandboxForUser():
     doc = User(user_id=current_user.user_id).get_user_doc()
-    return jsonify(doc.sandbox_conf)
+    return doc.sandbox_conf
 
 # Add admin page route `\admin`.
 admin.add_view(AdminModelView(models.User))

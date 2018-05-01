@@ -69,6 +69,7 @@ export default class extends Phaser.State {
         let operation = 'POST'
         let params = JSON.stringify(this.taskContext)
         sendHttpRequest(printHttpResponse, operation, url, params)
+        this.game.state.start('KnightStoryBoard')
     }
 
     clearSandbox() {
@@ -262,7 +263,7 @@ export default class extends Phaser.State {
             for (let i = 0; i < this.state.taskContext.interactionItems.length; i++) {
                 let interactiveItem = this.state.taskContext.interactionItems[i]
                 if (interactiveItem.spriteKey === this.key) {
-                    interactiveItem.coordinates.push({x: this.state.selectedX, y: this.state.selectedY, xoffset: this.xoffset, yoffset: this.yoffset})
+                    interactiveItem.coordinates.push({x: this.state.selectedX, y: this.state.selectedY, xOffset: this.xoffset, yOffset: this.yoffset})
                     let interactions = this.state.taskContext.passCondition.interactions
                     interactions.push({
                         sprite: this.key + interactions.length,
@@ -277,7 +278,7 @@ export default class extends Phaser.State {
             for (let i = 0; i < this.state.taskContext.items.length; i++) {
                 let item = this.state.taskContext.items[i]
                 if (item.key === this.key) {
-                    item.coordinates.push({x: this.state.selectedX, y: this.state.selectedY, xoffset: this.xoffset, yoffset: this.yoffset})
+                    item.coordinates.push({x: this.state.selectedX, y: this.state.selectedY, xOffset: this.xoffset, yOffset: this.yoffset})
                     this.state.drawItem(this.state.selectedX, this.state.selectedY, this.xoffset, this.yoffset, this.key, item.width, item.height)
                     this.state.decrementResource(this.key)
                     if (this.key === 'victory') {

@@ -38,7 +38,7 @@ export default class extends Phaser.Sprite {
         let x = this.game.world.width - rescaleXOffset(80, this.game)
         let y = rescaleYOffset(80, this.game)
         let spacer = rescaleXOffset(50, this.game)
-        if (this.taskCompleted) {
+        if (this.taskCompleted && !this.game.global.selfTask) {
             this.nextButton = this.game.add.button(x, y, 'Buttons', this.nextGame, this, 'buttons/arrow/hover', 'buttons/arrow/normal', 'buttons/arrow/click', 'buttons/arrow/disabled')
             rescaleObject(this.nextButton, this.game, -1, 1)
             this.nextButton.anchor.setTo(0.5, 0.5)

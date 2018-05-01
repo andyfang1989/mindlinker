@@ -214,6 +214,7 @@ export default class extends Phaser.State {
                 }
                 for (let j = 0; j < item.coordinates.length; j++) {
                     let position = item.coordinates[j]
+                    logDebugInfo('x: ' + position.x + ' y: ' + position.y + ' xoffset: ' + position.xOffset + ' yoffset: ' + position.yOffset)
                     let ix = this.gridStartX + Math.round(position.x * gridWidth) + rescaleXOffset(Math.round(position.xOffset * item.width), this.game)
                     let iy = this.gridStartY + Math.round(position.y * gridHeight) + rescaleYOffset(Math.round(position.yOffset * item.height), this.game)
                     logDebugInfo('Draw item ' + i + ' at gx = ' + position.x + ' gy = ' + position.y + ' x = ' + ix + ' y = ' + iy)

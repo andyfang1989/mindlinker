@@ -6182,6 +6182,7 @@ function play(animationContext) {
         if (this.readyState == 4 && this.status == 200) {
             let conf = JSON.parse(this.responseText);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__Logger__["a" /* logDebugInfo */])('Sandbox Conf: ' + conf.toString());
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__Logger__["a" /* logDebugInfo */])('Check Conf Validity: ' + conf.character_starting_grid_x);
             if (conf.character_starting_grid_x === undefined) {
                 alert('您还未制作沙盘游戏！');
                 window.game.state.start('KnightStoryBoard');
@@ -13213,4 +13214,4 @@ module.exports = __webpack_require__(/*! /Users/kfang/Desktop/mindlinker/src/mai
 
 /***/ })
 ],[329]);
-//# sourceMappingURL=bundle-c11e76.js.map
+//# sourceMappingURL=bundle-e18587.js.map

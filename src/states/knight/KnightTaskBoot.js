@@ -45,8 +45,8 @@ export default class extends Phaser.State {
     renderKnightAnimationBoardOnGettingSandboxConf() {
         logDebugInfo('KnightTaskBoot RenderKnightAnimationBoardOnGettingSandboxConf.')
         if(this.readyState == 4 && this.status == 200) {
+            logDebugInfo('Response: ' + this.responseText)
             let conf = JSON.parse(this.responseText)
-            logDebugInfo('Sandbox Conf: ' + conf.toString())
             if (conf.character_starting_grid_x === undefined) {
                 alert('您还未制作沙盘游戏！')
                 window.game.state.start('KnightStoryBoard')
